@@ -14,6 +14,8 @@ public sealed record Username
             return Result.Fail<Username>(UsernameErrors.Empty);
         }
 
+        value = value.Trim();
+
         if (value.Length < 3 || value.Length > 20)
         {
             return Result.Fail<Username>(UsernameErrors.InvalidLength(3, 20));
