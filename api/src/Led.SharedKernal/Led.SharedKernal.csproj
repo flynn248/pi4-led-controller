@@ -4,6 +4,7 @@
 	<ItemGroup>
 		<PackageReference Include="FluentResults" />
 		<PackageReference Include="LiteBus.Events.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 	</ItemGroup>
 
 </Project>

@@ -5,7 +5,9 @@
     <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/Led.Application/Led.Application.csproj" Id="bee95ead-ae6e-47ce-adff-248c35e561f3" />
     <Project Path="src/Led.Domain/Led.Domain.csproj" Id="5cd3f535-cf45-479f-aee3-f3f4dc26564b" />
+    <Project Path="src/Led.Infrastructure/Led.Infrastructure.csproj" Id="28ef6371-043f-484b-821c-4111a3553b12" />
     <Project Path="src/Led.SharedKernal/Led.SharedKernal.csproj" Id="c4c2e4b1-f8a3-4180-b5cd-6cfe102400c5" />
     <Project Path="src/Led.WebApi/Led.WebApi.csproj" />
   </Folder>
