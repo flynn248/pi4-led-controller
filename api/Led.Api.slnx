@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Led.Domain/Led.Domain.csproj" Id="5cd3f535-cf45-479f-aee3-f3f4dc26564b" />
+    <Project Path="src/Led.SharedKernal/Led.SharedKernal.csproj" Id="c4c2e4b1-f8a3-4180-b5cd-6cfe102400c5" />
+    <Project Path="src/Led.WebApi/Led.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>
