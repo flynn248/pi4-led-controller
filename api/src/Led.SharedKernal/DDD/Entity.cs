@@ -1,24 +1,15 @@
 ﻿namespace Led.SharedKernal.DDD;
 
-public abstract class Entity
+public abstract class Entity<TId>
+    where TId : notnull
 {
-    private readonly List<IDomainEvent> _domainEvents = new();
-
+    protected Entity(TId id)
+    {
+        Id = id;
+    }
     protected Entity()
-    { }
-
-    public IReadOnlyList<IDomainEvent> GetDomainEvents()
     {
-        return _domainEvents.AsReadOnly();
     }
 
-    public void ClearDomainEvents()
-    {
-        _domainEvents.Clear();
-    }
-
-    protected void RaiseDomainEvent(IDomainEvent domainEvent)
-    {
-        _domainEvents.Add(domainEvent);
-    }
+    public TId Id { get; init; }
 }

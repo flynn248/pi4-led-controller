@@ -5,9 +5,8 @@ using Led.SharedKernal.DDD;
 
 namespace Led.Domain.Users;
 
-public sealed class User : Entity
+public sealed class User : AggregateRoot<Guid>
 {
-    public Guid Id { get; private set; }
     public Email Email { get; private set; }
     public Username Username { get; private set; }
     public string PasswordHash { get; private set; }
@@ -18,8 +17,8 @@ public sealed class User : Entity
     { }
 
     private User(Guid id, Email email, Username userName, string passwordHash, DateTime createdAt)
+        : base(id)
     {
-        Id = id;
         Email = email;
         Username = userName;
         PasswordHash = passwordHash;
