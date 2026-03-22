@@ -82,6 +82,9 @@ csharp_style_prefer_tuple_swap = true:suggestion
 csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
 csharp_style_prefer_utf8_string_literals = true:suggestion
 
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = suggestion
+
 [*.{cs,vb}]
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 dotnet_style_prefer_simplified_interpolation = true:suggestion
