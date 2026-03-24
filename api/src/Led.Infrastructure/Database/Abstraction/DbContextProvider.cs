@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Led.Infrastructure.Database.Abstraction;
 
-internal class DbContextProvider<TDbContext> : IDbContextProvider<TDbContext>
+internal sealed class DbContextProvider<TDbContext> : IDbContextProvider<TDbContext>
     where TDbContext : DbContext
 {
     private readonly IUnitOfWorkManager _unitOfWorkManager;

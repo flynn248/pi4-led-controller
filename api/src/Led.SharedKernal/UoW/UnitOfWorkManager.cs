@@ -2,7 +2,7 @@
 
 namespace Led.SharedKernal.UoW;
 
-internal class UnitOfWorkManager : IUnitOfWorkManager
+internal sealed class UnitOfWorkManager : IUnitOfWorkManager
 {
     private readonly IAmbientUnitOfWork _ambientUnitOfWork;
     private readonly IServiceScopeFactory _serviceScopeFactory;
@@ -15,18 +15,14 @@ internal class UnitOfWorkManager : IUnitOfWorkManager
         _serviceScopeFactory = serviceScopeFactory;
     }
 
-    public IUnitOfWork Begin(bool createNewUow = false)
+    public IUnitOfWork Begin()
     {
-        var current = Current;
-
-        if (current is not null && !createNewUow)
+        if (Current is not null)
         {
-            return new ChildUnitOfWork(current);
+            throw new InvalidOperationException("Unit of Work already exists");
         }
 
-        var unitOfWork = CreateNewUnitOfWork();
-
-        return unitOfWork;
+        return CreateNewUnitOfWork();
     }
 
     private IUnitOfWork CreateNewUnitOfWork()
@@ -35,17 +31,13 @@ internal class UnitOfWorkManager : IUnitOfWorkManager
 
         try
         {
-            var parentUow = _ambientUnitOfWork.UnitOfWork;
-
             var newUow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-
-            newUow.SetParent(parentUow);
 
             _ambientUnitOfWork.SetUnitOfWork(newUow);
 
             newUow.Disposed += (sender, args) =>
             {
-                _ambientUnitOfWork.SetUnitOfWork(parentUow);
+                _ambientUnitOfWork.ClearUnitOfWork();
                 scope.Dispose();
             };
 

@@ -9,7 +9,7 @@ internal sealed class UnitOfWork : IUnitOfWork
     private bool _isRolledBack;
 
     public Guid Id => Guid.NewGuid();
-    public IUnitOfWork? ParentUow { get; private set; }
+    //public IUnitOfWork? ParentUow { get; private set; }
     public bool IsDisposed { get; private set; }
     public bool IsCompleted { get; private set; }
     public IServiceProvider ServiceProvider { get; }
@@ -22,10 +22,10 @@ internal sealed class UnitOfWork : IUnitOfWork
         ServiceProvider = serviceProvider;
     }
 
-    public void SetParent(IUnitOfWork parent)
-    {
-        ParentUow = parent;
-    }
+    //public void SetParent(IUnitOfWork parent)
+    //{
+    //    ParentUow = parent;
+    //}
 
     public async Task SaveChanges(CancellationToken cancellationToken = default)
     {

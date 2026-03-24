@@ -2,7 +2,7 @@
 
 namespace Led.Infrastructure.Database;
 
-internal class ApplicationDbContext : DbContext
+internal sealed class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext()
     {

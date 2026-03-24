@@ -2,7 +2,7 @@
 
 internal interface IAmbientUnitOfWork
 {
-    IUnitOfWork UnitOfWork { get; }
     void SetUnitOfWork(IUnitOfWork unitOfWork);
+    void ClearUnitOfWork();
     IUnitOfWork? GetCurrent();
 }

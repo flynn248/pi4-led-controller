@@ -1,23 +1,21 @@
 ﻿namespace Led.SharedKernal.UoW;
 
-internal class AmbientUnitOfWork : IAmbientUnitOfWork
+internal sealed class AmbientUnitOfWork : IAmbientUnitOfWork
 {
-    private readonly AsyncLocal<IUnitOfWork> _currentUow;
-
-    public IUnitOfWork UnitOfWork => _currentUow.Value!;
+    private readonly AsyncLocal<IUnitOfWork?> _currentUow;
 
     public AmbientUnitOfWork()
     {
-        _currentUow = new AsyncLocal<IUnitOfWork>();
+        _currentUow = new AsyncLocal<IUnitOfWork?>();
     }
 
     public IUnitOfWork? GetCurrent()
     {
-        var current = UnitOfWork;
+        var current = _currentUow.Value;
 
-        while (current is not null && (current.IsCompleted || current.IsDisposed))
+        if (current is not null && (current.IsCompleted || current.IsDisposed))
         {
-            current = current.ParentUow;
+            return null;
         }
 
         return current;
@@ -26,5 +24,10 @@ internal class AmbientUnitOfWork : IAmbientUnitOfWork
     public void SetUnitOfWork(IUnitOfWork unitOfWork)
     {
         _currentUow.Value = unitOfWork;
+    }
+
+    public void ClearUnitOfWork()
+    {
+        _currentUow.Value = null;
     }
 }
