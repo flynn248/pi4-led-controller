@@ -7,7 +7,7 @@ namespace Led.Domain.Devices;
 
 public sealed class Device : AggregateRoot<Guid>
 {
-    public Guid UserId { get; private set; }
+    public Guid TenantId { get; private set; }
     public Hostname Hostname { get; private set; }
     public Description Description { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -17,9 +17,9 @@ public sealed class Device : AggregateRoot<Guid>
     private Device()
     { }
 
-    private Device(Guid id, Guid userId, Hostname hostname, Description description, DateTime createdAt)
+    private Device(Guid id, Guid tenantId, Hostname hostname, Description description, DateTime createdAt)
     {
-        UserId = userId;
+        TenantId = tenantId;
         Hostname = hostname;
         Description = description;
         CreatedAt = createdAt;

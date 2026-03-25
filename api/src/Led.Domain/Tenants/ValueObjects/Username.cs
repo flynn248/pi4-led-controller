@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Led.Domain.Users.ValueObjects;
+namespace Led.Domain.Tenants.ValueObjects;
 
 public sealed record Username
 {

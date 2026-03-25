@@ -12,16 +12,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Directory.Packages.props", "."]
-COPY ["Directory.Build.props", "."]
-COPY ["src/Led.WebApi/Led.WebApi.csproj", "src/Led.WebApi/"]
-COPY ["src/Led.Infrastructure/Led.Infrastructure.csproj", "src/Led.Infrastructure/"]
-COPY ["src/Led.Application/Led.Application.csproj", "src/Led.Application/"]
-COPY ["src/Led.Domain/Led.Domain.csproj", "src/Led.Domain/"]
-COPY ["src/Led.SharedKernal/Led.SharedKernal.csproj", "src/Led.SharedKernal/"]
-RUN dotnet restore "./src/Led.WebApi/Led.WebApi.csproj"
+COPY ["Led.WebApi/Led.WebApi.csproj", "Led.WebApi/"]
+RUN dotnet restore "./Led.WebApi/Led.WebApi.csproj"
 COPY . .
-WORKDIR "/src/src/Led.WebApi"
+WORKDIR "/src/Led.WebApi"
 RUN dotnet build "./Led.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

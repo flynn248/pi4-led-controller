@@ -116,7 +116,7 @@ public static class FluentErrorExtension
     /// <param name="error">The error instance.</param>
     /// <returns>The <see cref="ErrorType"/></returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="error"/> is null.</exception>
-    public static ErrorType GetErrorType(this Error error)
+    public static ErrorType GetErrorType(this IError error)
     {
         ArgumentNullException.ThrowIfNull(error);
 
@@ -140,7 +140,7 @@ public static class FluentErrorExtension
     /// <param name="error">The <see cref="Error"/> instance from which to retrieve the error code. Cannot be null.</param>
     /// <returns>A string containing the error code if present; otherwise, an empty string.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="error"/> is null.</exception>
-    public static string GetErrorCode(this Error error)
+    public static string GetErrorCode(this IError error)
     {
         ArgumentNullException.ThrowIfNull(error);
 

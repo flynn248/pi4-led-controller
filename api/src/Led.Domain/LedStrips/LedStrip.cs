@@ -7,7 +7,7 @@ namespace Led.Domain.LedStrips;
 
 public sealed class LedStrip : AggregateRoot<Guid>
 {
-    public Guid UserId { get; private set; }
+    public Guid TenantId { get; private set; }
     public Guid DeviceId { get; private set; }
     public LedStripType StripTypeId { get; private set; }
     public Name Name { get; private set; }
@@ -41,7 +41,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
                      DateTime createdAt)
     : base(id)
     {
-        UserId = userId;
+        TenantId = userId;
         DeviceId = deviceId;
         StripTypeId = stripTypeId;
         Name = name;
@@ -56,7 +56,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
         CreatedAt = createdAt;
     }
 
-    public static Result<LedStrip> Create(Guid userId,
+    public static Result<LedStrip> Create(Guid tenantId,
                                           Guid deviceId,
                                           LedStripType stripTypeId,
                                           Name name,
@@ -72,7 +72,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
     {
 
         var ledStrip = new LedStrip(Guid.CreateVersion7(),
-                                    userId,
+                                    tenantId,
                                     deviceId,
                                     stripTypeId,
                                     name,

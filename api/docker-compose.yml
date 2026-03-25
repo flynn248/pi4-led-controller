@@ -1,0 +1,19 @@
+services:
+  led.webapi:
+    image: ${DOCKER_REGISTRY-}ledwebapi
+    container_name: led.webapi
+    build:
+      context: .
+      dockerfile: src/Led.WebApi/Dockerfile
+
+  led.database:
+    image: postgres:latest
+    container_name: led.database
+    environment:
+      - POSTGRES_DB=ledApp
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

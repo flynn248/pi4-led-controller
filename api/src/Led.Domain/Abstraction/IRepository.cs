@@ -1,13 +1,16 @@
 ﻿using System.Linq.Expressions;
+using Led.SharedKernal.DDD;
 
-namespace Led.Application.Abstraction;
+namespace Led.Domain.Abstraction;
 
-public interface IRepository<TEntity>
-    where TEntity : class
+public interface IRepository<TEntity, TEntityId>
+    where TEntity : Entity<TEntityId>
+    where TEntityId : notnull
 {
     TEntity Add(TEntity entity);
     void Update(TEntity entity);
     void Delete(TEntity entity);
+    Task<TEntity?> GetById(TEntityId id, CancellationToken cancellationToken = default);
 
     Task<TEntity?> FirstOrDefault(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 

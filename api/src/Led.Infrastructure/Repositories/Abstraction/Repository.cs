@@ -1,13 +1,15 @@
 ﻿using System.Linq.Expressions;
-using Led.Application.Abstraction;
+using Led.Domain.Abstraction;
 using Led.Infrastructure.Database.Abstraction;
+using Led.SharedKernal.DDD;
 using Microsoft.EntityFrameworkCore;
 
 namespace Led.Infrastructure.Repositories.Abstraction;
 
-internal abstract class Repository<TDbContext, TEntity> : IRepository<TEntity>
+internal abstract class Repository<TDbContext, TEntity, TEntityId> : IRepository<TEntity, TEntityId>
     where TDbContext : DbContext
-    where TEntity : class
+    where TEntity : Entity<TEntityId>
+    where TEntityId : notnull
 {
     private readonly IDbContextProvider<TDbContext> _dbContextProvider;
 
@@ -16,6 +18,11 @@ internal abstract class Repository<TDbContext, TEntity> : IRepository<TEntity>
         ArgumentNullException.ThrowIfNull(dbContextProvider);
 
         _dbContextProvider = dbContextProvider;
+    }
+
+    protected virtual TDbContext GetDbContext()
+    {
+        return _dbContextProvider.GetDbContext();
     }
 
     public TEntity Add(TEntity entity)
@@ -27,7 +34,7 @@ internal abstract class Repository<TDbContext, TEntity> : IRepository<TEntity>
     public async Task<TEntity?> FirstOrDefault(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
         var context = GetDbContext();
-        return await context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(predicate, cancellationToken);
+        return await context.Set<TEntity>().FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
     /// <inheritdoc cref="IRepository{TEntity}" />
@@ -70,8 +77,9 @@ internal abstract class Repository<TDbContext, TEntity> : IRepository<TEntity>
         context.Set<TEntity>().Update(entity);
     }
 
-    protected virtual TDbContext GetDbContext()
+    public async Task<TEntity?> GetById(TEntityId id, CancellationToken cancellationToken = default)
     {
-        return _dbContextProvider.GetDbContext();
+        var context = GetDbContext();
+        return await context.Set<TEntity>().SingleOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
     }
 }

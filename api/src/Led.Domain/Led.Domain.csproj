@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
-		<Folder Include="Shared\" />
+		<ProjectReference Include="..\Led.SharedKernal\Led.SharedKernal.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Led.SharedKernal\Led.SharedKernal.csproj" />
+	  <Folder Include="Shared\" />
 	</ItemGroup>
 </Project>

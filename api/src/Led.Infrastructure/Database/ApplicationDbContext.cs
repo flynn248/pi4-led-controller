@@ -2,7 +2,7 @@
 
 namespace Led.Infrastructure.Database;
 
-internal sealed class ApplicationDbContext : DbContext
+public sealed class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext()
     {
@@ -18,8 +18,10 @@ internal sealed class ApplicationDbContext : DbContext
         ArgumentNullException.ThrowIfNull(optionsBuilder);
 
 #if DEBUG
-        optionsBuilder.EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+        optionsBuilder
+            .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
+            .EnableSensitiveDataLogging();
+        //.EnableDetailedErrors();
 #endif
     }
 

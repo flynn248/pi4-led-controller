@@ -17,5 +17,8 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<SonarQubeSetting Include="sonar.exclusions">
+			<Value>**/Migrations/*.cs</Value>
+		</SonarQubeSetting>
 	</ItemGroup>
 </Project>
