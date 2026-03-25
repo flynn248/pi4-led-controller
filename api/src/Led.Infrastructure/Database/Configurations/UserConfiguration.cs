@@ -12,6 +12,9 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(e => e.Id);
 
+        builder.Property(e => e.Id)
+            .HasColumnName("id");
+
         builder.OwnsOne(e => e.FirstName, name =>
         {
             name.Property(n => n.Value).HasColumnName("first_name");
@@ -31,6 +34,15 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         {
             name.Property(n => n.Value).HasColumnName("username");
         });
+
+        builder.Property(e => e.CreatedAtUtc)
+            .HasColumnName("created_at_utc");
+
+        builder.Property(e => e.ModifiedAtUtc)
+            .HasColumnName("modified_at_utc");
+
+        builder.Property(e => e.PasswordHash)
+            .HasColumnName("password_hash");
 
         //builder.HasData(User.Create(Email.Create("test@test.com").Value, Username.Create("UserName").Value, "", DateTime.UtcNow));
     }

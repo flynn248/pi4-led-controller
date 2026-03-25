@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<PackageReference Include="EFCore.NamingConventions" />
 		<PackageReference Include="LiteBus.Commands.Extensions.Microsoft.DependencyInjection" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
 	</ItemGroup>

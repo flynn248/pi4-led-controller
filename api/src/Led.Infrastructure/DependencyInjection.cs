@@ -31,7 +31,7 @@ public static class DependencyInjection
             config.UseNpgsql("Host=led.database;Port=5432;Database=ledApp;Username=postgres;Password=postgres;Include Error Detail=true", options =>
             {
                 options.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default);
-            }).UseSnakeCaseNamingConvention();
+            });
         });
 
         services.AddScoped<IUserRepository, UserRepository>();

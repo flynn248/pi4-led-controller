@@ -11,13 +11,13 @@ public sealed class User : AggregateRoot<Guid>
     public Name LastName { get; private set; }
     public Username Username { get; private set; }
     public string PasswordHash { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? ModifiedAt { get; private set; }
+    public DateTime CreatedAtUtc { get; private set; }
+    public DateTime? ModifiedAtUtc { get; private set; }
 
     private User()
     { }
 
-    private User(Guid id, Name firstName, Name lastName, Username username, Email email, string passwordHash, DateTime createdAt)
+    private User(Guid id, Name firstName, Name lastName, Username username, Email email, string passwordHash, DateTime createdAtUtc)
         : base(id)
     {
         FirstName = firstName;
@@ -25,19 +25,19 @@ public sealed class User : AggregateRoot<Guid>
         Username = username;
         Email = email;
         PasswordHash = passwordHash;
-        CreatedAt = createdAt;
+        CreatedAtUtc = createdAtUtc;
     }
 
-    public static User Create(Name firstName, Name lastName, Username username, Email email, string passwordHash, DateTime createdAt)
+    public static User Create(Name firstName, Name lastName, Username username, Email email, string passwordHash, DateTime createdAtUtc)
     {
-        var user = new User(Guid.CreateVersion7(), firstName, lastName, username, email, passwordHash, createdAt);
+        var user = new User(Guid.CreateVersion7(), firstName, lastName, username, email, passwordHash, createdAtUtc);
 
         user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 
         return user;
     }
 
-    public void UpdateEmail(Email newEmail, DateTime modifiedAt)
+    public void UpdateEmail(Email newEmail, DateTime modifiedAtUtc)
     {
         if (Email == newEmail)
         {
@@ -47,12 +47,12 @@ public sealed class User : AggregateRoot<Guid>
         Email oldEmail = Email;
 
         Email = newEmail;
-        ModifiedAt = modifiedAt;
+        ModifiedAtUtc = modifiedAtUtc;
 
         RaiseDomainEvent(new UserEmailUpdatedDomainEvent(Id, Email.Value, oldEmail.Value));
     }
 
-    public void UpdateUserName(Username newUsername, DateTime modifiedAt)
+    public void UpdateUserName(Username newUsername, DateTime modifiedAtUtc)
     {
         if (Username == newUsername)
         {
@@ -60,12 +60,12 @@ public sealed class User : AggregateRoot<Guid>
         }
 
         Username = newUsername;
-        ModifiedAt = modifiedAt;
+        ModifiedAtUtc = modifiedAtUtc;
 
         RaiseDomainEvent(new UserUsernameUpdatedDomainEvent(Id));
     }
 
-    public void UpdateName(Name newFirstName, Name newLastName, DateTime modifiedAt)
+    public void UpdateName(Name newFirstName, Name newLastName, DateTime modifiedAtUtc)
     {
         if (FirstName == newFirstName && LastName == newLastName)
         {
@@ -74,6 +74,6 @@ public sealed class User : AggregateRoot<Guid>
 
         FirstName = newFirstName;
         LastName = newLastName;
-        ModifiedAt = modifiedAt;
+        ModifiedAtUtc = modifiedAtUtc;
     }
 }

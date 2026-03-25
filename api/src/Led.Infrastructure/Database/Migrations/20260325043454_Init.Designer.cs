@@ -3,6 +3,7 @@ using System;
 using Led.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Led.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260325043454_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,8 +38,7 @@ namespace Led.Infrastructure.Database.Migrations
                         .HasColumnName("created_at_utc");
 
                     b.Property<DateTime?>("ModifiedAtUtc")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("modified_at_utc");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -61,7 +63,7 @@ namespace Led.Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("tenant_user", "led");
+                    b.ToTable("TenantUser", "led");
                 });
 
             modelBuilder.Entity("Led.Domain.Tenants.User", b =>
@@ -81,8 +83,7 @@ namespace Led.Infrastructure.Database.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("password_hash");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

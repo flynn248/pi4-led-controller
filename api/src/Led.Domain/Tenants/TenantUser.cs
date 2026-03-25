@@ -6,13 +6,13 @@ public sealed class TenantUser : IEntity
 {
     public Guid TenantId { get; init; }
     public Guid UserId { get; init; }
-    public DateTime CreatedAt { get; init; }
+    public DateTime CreatedAtUtc { get; init; }
 
-    internal TenantUser(Guid tenantId, Guid userId, DateTime createdAt)
+    internal TenantUser(Guid tenantId, Guid userId, DateTime createdAtUtc)
     {
         TenantId = tenantId;
         UserId = userId;
-        CreatedAt = createdAt;
+        CreatedAtUtc = createdAtUtc;
     }
 
     private TenantUser()
