@@ -8,9 +8,9 @@ using LiteBus.Commands.Abstractions;
 
 namespace Led.Application.Users.UpdateEmail;
 
-public sealed class UpdateEmailCommandHandler(IUserRepository userRepository,
-                                              IUnitOfWorkManager unitOfWorkManager,
-                                              IDateTimeProvider dateTimeProvider) : ICommandHandler<UpdateEmailCommand, Result>
+internal sealed class UpdateEmailCommandHandler(IUserRepository userRepository,
+                                                IUnitOfWorkManager unitOfWorkManager,
+                                                IDateTimeProvider dateTimeProvider) : ICommandHandler<UpdateEmailCommand, Result>
 {
     public async Task<Result> HandleAsync(UpdateEmailCommand message, CancellationToken cancellationToken = default)
     {

@@ -11,7 +11,10 @@
     <Project Path="src/Led.SharedKernal/Led.SharedKernal.csproj" Id="c4c2e4b1-f8a3-4180-b5cd-6cfe102400c5" />
     <Project Path="src/Led.WebApi/Led.WebApi.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="tests/Led.Api.ArchitectureTests/Led.Api.ArchitectureTests.csproj" Id="4f722a16-58ee-4a7c-af50-42f836bdeacc" />
+    <Project Path="tests/Led.Api.UnitTests/Led.Api.UnitTests.csproj" Id="1297db70-f4a7-464a-be37-fc520482f062" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
