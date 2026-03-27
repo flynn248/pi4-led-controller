@@ -14,4 +14,8 @@
 		<PackageReference Include="LiteBus.Queries.Abstractions" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Led.Api.UnitTests" />
+	</ItemGroup>
+
 </Project>
