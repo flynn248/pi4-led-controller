@@ -14,8 +14,13 @@ public sealed record Name
         {
             return Result.Fail<Name>(NameErrors.Empty);
         }
-        // TODO: Max length
+
         value = value.Trim();
+
+        if (value.Length > MaxLength)
+        {
+            return Result.Fail<Name>(NameErrors.InvalidLength(MaxLength));
+        }
 
         return new Name(value);
     }
