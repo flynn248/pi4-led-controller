@@ -17,4 +17,8 @@
 		<None Include="D:\ADO\LED_new\App\api\src\Led.Infrastructure\Database\Migrations\.editorconfig" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Led.Api.ArchitectureTests" />
+	</ItemGroup>
+
 </Project>
