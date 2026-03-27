@@ -9,4 +9,12 @@
 		<ProjectReference Include="..\Led.Application\Led.Application.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<EditorConfigFiles Remove="D:\ADO\LED_new\App\api\src\Led.Infrastructure\Database\Migrations\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="D:\ADO\LED_new\App\api\src\Led.Infrastructure\Database\Migrations\.editorconfig" />
+	</ItemGroup>
+
 </Project>
