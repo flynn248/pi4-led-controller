@@ -7,7 +7,7 @@ The goal of the project is to "learn by application" for various topics/ languag
 - Docker
 - ASP.NET Core Web API
 - Authorization/ Authentication
-- Languages: Typescript, Python, C#
+- Languages: React, Typescript, Python, C#
 - Claude AI
 
 The use of Claude AI is to better understand AI coding tools and how they can be integrated into the workflow effectively while avoiding the slop associated with it _(if possible)_.
