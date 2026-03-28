@@ -6,6 +6,7 @@ public sealed record Description
 {
     private Description(string value) => Value = value;
     public string Value { get; init; }
+    public const int MaxLength = 200;
 
     public static Result<Description> Create(string value)
     {
@@ -16,9 +17,9 @@ public sealed record Description
 
         value = value.Trim();
 
-        if (value.Length > 200)
+        if (value.Length > MaxLength)
         {
-            return Result.Fail<Description>(DescriptionErrors.InvalidLength(200));
+            return Result.Fail<Description>(DescriptionErrors.InvalidLength(MaxLength));
         }
 
         return new Description(value);

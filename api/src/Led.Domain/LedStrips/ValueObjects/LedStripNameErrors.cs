@@ -3,7 +3,7 @@ using Led.SharedKernal.FluentResult;
 
 namespace Led.Domain.LedStrips.ValueObjects;
 
-public static class NameErrors
+public static class LedStripNameErrors
 {
     private const string _baseErrorCode = "name";
     public const string EmptyErrorCode = $"{_baseErrorCode}.empty";

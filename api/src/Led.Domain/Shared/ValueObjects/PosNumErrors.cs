@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Led.SharedKernal.FluentResult;
 
-namespace Led.Domain.LedStrips.ValueObjects;
+namespace Led.Domain.Shared.ValueObjects;
 
 public static class PosNumErrors
 {

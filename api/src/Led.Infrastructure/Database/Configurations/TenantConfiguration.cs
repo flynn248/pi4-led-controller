@@ -19,8 +19,8 @@ internal sealed class TenantConfiguration : IEntityTypeConfiguration<Tenant>
         builder.OwnsOne(e => e.Name, name =>
         {
             name.Property(n => n.Value)
-                .HasMaxLength(Name.MaxLength)
-                .HasColumnName("name");
+                .HasColumnName("name")
+                .HasMaxLength(Name.MaxLength);
         });
 
         builder.Property(e => e.CreatedAtUtc)

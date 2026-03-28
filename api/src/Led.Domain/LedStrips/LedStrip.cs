@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using Led.Domain.LedStrips.Events;
 using Led.Domain.LedStrips.ValueObjects;
+using Led.Domain.Shared.ValueObjects;
 using Led.SharedKernal.DDD;
 
 namespace Led.Domain.LedStrips;
@@ -10,7 +11,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
     public Guid TenantId { get; private set; }
     public Guid DeviceId { get; private set; }
     public LedStripType StripTypeId { get; private set; }
-    public Name Name { get; private set; }
+    public LedStripName Name { get; private set; }
     public PosNum<short> GpioPin { get; private set; }
     public PosNum<short> LedCount { get; private set; }
     public PosNum<int> Frequency { get; private set; }
@@ -29,7 +30,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
                      Guid userId,
                      Guid deviceId,
                      LedStripType stripTypeId,
-                     Name name,
+                     LedStripName name,
                      PosNum<short> gpioPin,
                      PosNum<short> ledCount,
                      PosNum<int> frequency,
@@ -59,7 +60,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
     public static Result<LedStrip> Create(Guid tenantId,
                                           Guid deviceId,
                                           LedStripType stripTypeId,
-                                          Name name,
+                                          LedStripName name,
                                           PosNum<short> gpioPin,
                                           PosNum<short> ledCount,
                                           PosNum<int> frequency,
@@ -90,7 +91,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
     }
 
     public void Update(LedStripType stripTypeId,
-                       Name name,
+                       LedStripName name,
                        PosNum<short> gpioPin,
                        PosNum<short> ledCount,
                        PosNum<int> frequency,

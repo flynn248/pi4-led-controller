@@ -6,6 +6,8 @@ public sealed record Username
 {
     private Username(string value) => Value = value;
     public string Value { get; init; }
+    public const int MinLength = 3;
+    public const int MaxLength = 20;
 
     public static Result<Username> Create(string value)
     {
@@ -16,14 +18,9 @@ public sealed record Username
 
         value = value.Trim();
 
-        if (value.Length < 3 || value.Length > 20)
+        if (value.Length < MinLength || value.Length > MaxLength)
         {
-            return Result.Fail<Username>(UsernameErrors.InvalidLength(3, 20));
-        }
-
-        if (value.Contains("brandon")) // TODO: Replace with actual format validation (e.g., regex)
-        {
-            return Result.Fail<Username>(UsernameErrors.InvalidFormat);
+            return Result.Fail<Username>(UsernameErrors.InvalidLength(MinLength, MaxLength));
         }
 
         return new Username(value);

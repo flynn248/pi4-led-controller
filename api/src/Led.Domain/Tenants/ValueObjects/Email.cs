@@ -5,8 +5,8 @@ namespace Led.Domain.Tenants.ValueObjects;
 public sealed record Email
 {
     private Email(string value) => Value = value;
-
     public string Value { get; init; }
+    public const int MaxLength = 100;
 
     public static Result<Email> Create(string value)
     {
@@ -16,6 +16,11 @@ public sealed record Email
         }
 
         value = value.Trim();
+
+        if (value.Length > MaxLength)
+        {
+            return Result.Fail<Email>(EmailErrors.InvalidLength(MaxLength));
+        }
 
         // Email format validation
         if (value.Split('@').Length != 2 || !value.Contains('.'))

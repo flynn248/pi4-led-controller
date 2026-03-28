@@ -1,4 +1,5 @@
 ﻿using Led.Domain.Tenants;
+using Led.Domain.Tenants.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,22 +18,30 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.OwnsOne(e => e.FirstName, name =>
         {
-            name.Property(n => n.Value).HasColumnName("first_name");
+            name.Property(n => n.Value)
+                .HasColumnName("first_name")
+                .HasMaxLength(Name.MaxLength);
         });
 
         builder.OwnsOne(e => e.LastName, name =>
         {
-            name.Property(n => n.Value).HasColumnName("last_name");
+            name.Property(n => n.Value)
+                .HasColumnName("last_name")
+                .HasMaxLength(Name.MaxLength);
         });
 
         builder.OwnsOne(e => e.Email, name =>
         {
-            name.Property(n => n.Value).HasColumnName("email");
+            name.Property(n => n.Value)
+                .HasColumnName("email")
+                .HasMaxLength(Email.MaxLength);
         });
 
         builder.OwnsOne(e => e.Username, name =>
         {
-            name.Property(n => n.Value).HasColumnName("username");
+            name.Property(n => n.Value)
+                .HasColumnName("username")
+                .HasMaxLength(Username.MaxLength);
         });
 
         builder.Property(e => e.CreatedAtUtc)

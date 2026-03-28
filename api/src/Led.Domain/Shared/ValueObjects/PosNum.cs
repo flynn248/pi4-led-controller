@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Led.Domain.LedStrips.ValueObjects;
+namespace Led.Domain.Shared.ValueObjects;
 
 public sealed record PosNum<TValue>
     where TValue : struct

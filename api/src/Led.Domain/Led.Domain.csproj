@@ -2,7 +2,4 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Led.SharedKernal\Led.SharedKernal.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Shared\" />
-	</ItemGroup>
 </Project>
