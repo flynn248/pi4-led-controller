@@ -20,6 +20,23 @@ public class DomainTests : BaseTest
     }
 
     [Fact]
+    public void Entities_Should_BePublicSealedClass()
+    {
+        var result = Types.InAssembly(DomainAssembly)
+            .That()
+            .Inherit(typeof(Entity<>))
+            .Should()
+            .BePublic()
+            .And()
+            .BeSealed()
+            .And()
+            .BeClasses()
+            .GetResult();
+
+        result.IsValid();
+    }
+
+    [Fact]
     public void DomainEvent_ShouldHave_NameEndingWith_DomainEvent()
     {
         var result = Types.InAssembly(DomainAssembly)
