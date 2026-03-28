@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Led.SharedKernal.FluentResult;
 
-namespace Led.Domain.Tenants;
+namespace Led.Domain.Tenants.EntityErrors;
 
 public static class UserError
 {

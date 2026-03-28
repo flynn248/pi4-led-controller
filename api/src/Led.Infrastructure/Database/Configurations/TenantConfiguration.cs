@@ -11,10 +11,10 @@ internal sealed class TenantConfiguration : IEntityTypeConfiguration<Tenant>
     {
         builder.ToTable("tenant");
 
-        builder.HasKey(e => e.Id);
-
         builder.Property(e => e.Id)
             .HasColumnName("id");
+
+        builder.HasKey(e => e.Id);
 
         builder.OwnsOne(e => e.Name, name =>
         {

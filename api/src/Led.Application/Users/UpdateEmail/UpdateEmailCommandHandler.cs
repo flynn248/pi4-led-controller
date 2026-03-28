@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using Led.Domain.Tenants;
+using Led.Domain.Tenants.EntityErrors;
 using Led.Domain.Tenants.Repositories;
 using Led.Domain.Tenants.ValueObjects;
 using Led.SharedKernal.Clock;

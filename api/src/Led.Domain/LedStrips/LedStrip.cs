@@ -10,7 +10,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
 {
     public Guid TenantId { get; private set; }
     public Guid DeviceId { get; private set; }
-    public LedStripType StripTypeId { get; private set; }
+    public LedStripTypeId LedStripTypeId { get; private set; }
     public LedStripName Name { get; private set; }
     public PosNum<short> GpioPin { get; private set; }
     public PosNum<short> LedCount { get; private set; }
@@ -20,8 +20,8 @@ public sealed class LedStrip : AggregateRoot<Guid>
     public bool Invert { get; private set; }
     public PosNum<short> Voltage { get; private set; }
     public PosNum<int> MaxCurrentMa { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? ModifiedAt { get; private set; }
+    public DateTime CreatedAtUtc { get; private set; }
+    public DateTime? ModifiedAtUtc { get; private set; }
 
     private LedStrip()
     { }
@@ -29,7 +29,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
     private LedStrip(Guid id,
                      Guid userId,
                      Guid deviceId,
-                     LedStripType stripTypeId,
+                     LedStripTypeId ledStripTypeId,
                      LedStripName name,
                      PosNum<short> gpioPin,
                      PosNum<short> ledCount,
@@ -39,12 +39,12 @@ public sealed class LedStrip : AggregateRoot<Guid>
                      bool invert,
                      PosNum<short> voltage,
                      PosNum<int> maxCurrentMa,
-                     DateTime createdAt)
+                     DateTime createdAtUtc)
     : base(id)
     {
         TenantId = userId;
         DeviceId = deviceId;
-        StripTypeId = stripTypeId;
+        LedStripTypeId = ledStripTypeId;
         Name = name;
         GpioPin = gpioPin;
         LedCount = ledCount;
@@ -54,12 +54,12 @@ public sealed class LedStrip : AggregateRoot<Guid>
         Invert = invert;
         Voltage = voltage;
         MaxCurrentMa = maxCurrentMa;
-        CreatedAt = createdAt;
+        CreatedAtUtc = createdAtUtc;
     }
 
     public static Result<LedStrip> Create(Guid tenantId,
                                           Guid deviceId,
-                                          LedStripType stripTypeId,
+                                          LedStripTypeId ledStripTypeId,
                                           LedStripName name,
                                           PosNum<short> gpioPin,
                                           PosNum<short> ledCount,
@@ -69,13 +69,13 @@ public sealed class LedStrip : AggregateRoot<Guid>
                                           bool invert,
                                           PosNum<short> voltage,
                                           PosNum<int> maxCurrentMa,
-                                          DateTime createdAt)
+                                          DateTime createdAtUtc)
     {
 
         var ledStrip = new LedStrip(Guid.CreateVersion7(),
                                     tenantId,
                                     deviceId,
-                                    stripTypeId,
+                                    ledStripTypeId,
                                     name,
                                     gpioPin,
                                     ledCount,
@@ -85,12 +85,12 @@ public sealed class LedStrip : AggregateRoot<Guid>
                                     invert,
                                     voltage,
                                     maxCurrentMa,
-                                    createdAt);
+                                    createdAtUtc);
 
         return ledStrip;
     }
 
-    public void Update(LedStripType stripTypeId,
+    public void Update(LedStripTypeId ledStripTypeId,
                        LedStripName name,
                        PosNum<short> gpioPin,
                        PosNum<short> ledCount,
@@ -100,11 +100,11 @@ public sealed class LedStrip : AggregateRoot<Guid>
                        bool invert,
                        PosNum<short> voltage,
                        PosNum<int> maxCurrentMa,
-                       DateTime modifiedAt)
+                       DateTime modifiedAtUtc)
     {
         Name = name;
 
-        StripTypeId = stripTypeId;
+        LedStripTypeId = ledStripTypeId;
 
         GpioPin = gpioPin;
         LedCount = ledCount;
@@ -116,13 +116,13 @@ public sealed class LedStrip : AggregateRoot<Guid>
 
         Brightness = brightness;
 
-        ModifiedAt = modifiedAt;
+        ModifiedAtUtc = modifiedAtUtc;
     }
 
-    public void UpdateBrightness(PosNum<short> brightness, DateTime modifiedAt)
+    public void UpdateBrightness(PosNum<short> brightness, DateTime modifiedAtUtc)
     {
         Brightness = brightness;
-        ModifiedAt = modifiedAt;
+        ModifiedAtUtc = modifiedAtUtc;
 
         RaiseDomainEvent(new DeviceBrightnesssUpdatedDomainEvent(Id, Brightness.Value));
     }

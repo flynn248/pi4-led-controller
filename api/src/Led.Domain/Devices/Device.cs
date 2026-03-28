@@ -10,42 +10,42 @@ public sealed class Device : AggregateRoot<Guid>
     public Guid TenantId { get; private set; }
     public Hostname Hostname { get; private set; }
     public Description Description { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? ModifiedAt { get; private set; }
-    public DateTime LastSeenAt { get; private set; }
+    public DateTime CreatedAtUtc { get; private set; }
+    public DateTime? ModifiedAtUtc { get; private set; }
+    public DateTime LastSeenAtUtc { get; private set; }
 
     private Device()
     { }
 
-    private Device(Guid id, Guid tenantId, Hostname hostname, Description description, DateTime createdAt)
+    private Device(Guid id, Guid tenantId, Hostname hostname, Description description, DateTime createdAtUtc)
     {
         TenantId = tenantId;
         Hostname = hostname;
         Description = description;
-        CreatedAt = createdAt;
+        CreatedAtUtc = createdAtUtc;
     }
 
-    public static Result<Device> Create(Guid userId, Hostname hostname, Description description, DateTime createdAt)
+    public static Result<Device> Create(Guid userId, Hostname hostname, Description description, DateTime createdAtUtc)
     {
-        return new Device(Guid.CreateVersion7(), userId, hostname, description, createdAt);
+        return new Device(Guid.CreateVersion7(), userId, hostname, description, createdAtUtc);
     }
 
-    public void UpdateHostname(Hostname newhostname, DateTime modifiedAt)
+    public void UpdateHostname(Hostname newhostname, DateTime modifiedAtUtc)
     {
         Hostname = newhostname;
-        ModifiedAt = modifiedAt;
+        ModifiedAtUtc = modifiedAtUtc;
 
         RaiseDomainEvent(new DeviceHostnameUpdatedDomainEvent(Id));
     }
 
-    public void UpdateDescription(Description newDescription, DateTime modifiedAt)
+    public void UpdateDescription(Description newDescription, DateTime modifiedAtUtc)
     {
         Description = newDescription;
-        ModifiedAt = modifiedAt;
+        ModifiedAtUtc = modifiedAtUtc;
     }
 
-    public void UpdateLastSeen(DateTime lastSeenAt)
+    public void UpdateLastSeen(DateTime lastSeenAtUtc)
     {
-        LastSeenAt = lastSeenAt;
+        LastSeenAtUtc = lastSeenAtUtc;
     }
 }

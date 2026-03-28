@@ -11,10 +11,10 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("users");
 
-        builder.HasKey(e => e.Id);
-
         builder.Property(e => e.Id)
             .HasColumnName("id");
+
+        builder.HasKey(e => e.Id);
 
         builder.OwnsOne(e => e.FirstName, name =>
         {
