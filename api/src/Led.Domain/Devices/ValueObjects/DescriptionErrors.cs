@@ -8,5 +8,5 @@ public static class DescriptionErrors
     private const string _baseErrorCode = "description";
     public const string InvalidLengthErrorCode = $"{_baseErrorCode}.invalid_length";
 
-    public static Error InvalidLength(int max) => new Error($"Description cannot exceed {max} characters.").Validation(InvalidLengthErrorCode);
+    public static Error InvalidLength(int max) => new Error($"Description cannot exceed {max} characters").Validation(InvalidLengthErrorCode);
 }

@@ -9,7 +9,7 @@ public static class HostnameErrors
     public const string EmptyErrorCode = $"{_baseErrorCode}.empty";
     public const string InvalidLengthErrorCode = $"{_baseErrorCode}.invalid_length";
 
-    public static Error Empty => new Error("Hostname cannot be empty.").Validation(EmptyErrorCode);
+    public static Error Empty => new Error("Hostname cannot be empty").Validation(EmptyErrorCode);
     public static Error InvalidLength(int length) => new Error($"Hostname cannot exceed {length} characters").Validation(InvalidLengthErrorCode);
 
 }
