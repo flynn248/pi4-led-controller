@@ -102,7 +102,34 @@ public sealed class LedStrip : AggregateRoot<Guid>
                        PosNum<int> maxCurrentMa,
                        DateTime modifiedAtUtc)
     {
+        if (Name == name
+            || LedStripTypeId == ledStripTypeId
+            || GpioPin == gpioPin
+            || LedCount == ledCount
+            || Frequency == frequency
+            || DmaChannel == dmaChannel
+            || Invert == invert
+            || Voltage == voltage
+            || MaxCurrentMa == maxCurrentMa
+            || Brightness == brightness)
+        {
+            return;
+        }
+
         Name = name;
+
+        if (LedStripTypeId != ledStripTypeId
+            || GpioPin != gpioPin
+            || LedCount != ledCount
+            || Frequency != frequency
+            || DmaChannel != dmaChannel
+            || Invert != invert
+            || Voltage != voltage
+            || MaxCurrentMa != maxCurrentMa
+            || Brightness != brightness)
+        {
+            RaiseDomainEvent(new LedStripUpdatedDomainEvent(Id));
+        }
 
         LedStripTypeId = ledStripTypeId;
 
@@ -113,17 +140,8 @@ public sealed class LedStrip : AggregateRoot<Guid>
         Invert = invert;
         Voltage = voltage;
         MaxCurrentMa = maxCurrentMa;
-
         Brightness = brightness;
 
         ModifiedAtUtc = modifiedAtUtc;
-    }
-
-    public void UpdateBrightness(PosNum<short> brightness, DateTime modifiedAtUtc)
-    {
-        Brightness = brightness;
-        ModifiedAtUtc = modifiedAtUtc;
-
-        RaiseDomainEvent(new DeviceBrightnesssUpdatedDomainEvent(Id, Brightness.Value));
     }
 }
