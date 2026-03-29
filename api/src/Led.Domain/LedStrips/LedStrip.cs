@@ -102,20 +102,6 @@ public sealed class LedStrip : AggregateRoot<Guid>
                        PosNum<int> maxCurrentMa,
                        DateTime modifiedAtUtc)
     {
-        if (Name == name
-            || LedStripTypeId == ledStripTypeId
-            || GpioPin == gpioPin
-            || LedCount == ledCount
-            || Frequency == frequency
-            || DmaChannel == dmaChannel
-            || Invert == invert
-            || Voltage == voltage
-            || MaxCurrentMa == maxCurrentMa
-            || Brightness == brightness)
-        {
-            return;
-        }
-
         Name = name;
 
         if (LedStripTypeId != ledStripTypeId
