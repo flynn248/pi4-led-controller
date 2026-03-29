@@ -27,10 +27,10 @@ internal sealed class DeviceConfiguration : IEntityTypeConfiguration<Device>
             .WithMany()
             .HasForeignKey(e => e.TenantId);
 
-        builder.OwnsOne(e => e.Hostname, hostName =>
+        builder.OwnsOne(e => e.Name, hostName =>
         {
             hostName.Property(h => h.Value)
-                .HasColumnName("hostname");
+                .HasColumnName("name");
         });
 
         //builder.OwnsOne(e => e.IpAddress, ip =>

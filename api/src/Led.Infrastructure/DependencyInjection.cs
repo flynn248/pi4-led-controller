@@ -1,4 +1,5 @@
 ﻿using Led.Application.Abstraction.SSH;
+using Led.Domain.Devices.Repositories;
 using Led.Domain.Tenants.Repositories;
 using Led.Infrastructure.Clock;
 using Led.Infrastructure.Database;
@@ -37,6 +38,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IDeviceRepository, DeviceRepository>();
 
         return services;
     }
