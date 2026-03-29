@@ -5,10 +5,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Abstraction\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="LiteBus.Commands.Extensions.Microsoft.DependencyInjection" />
 		<PackageReference Include="LiteBus.Commands.Abstractions" />
 		<PackageReference Include="LiteBus.Queries.Abstractions" />

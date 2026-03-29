@@ -44,9 +44,8 @@ internal sealed class EffectConfiguration : IEntityTypeConfiguration<Effect>
 
         builder.OwnsOne(e => e.ParameterJson, json =>
         {
-            json.ToJson()
+            json.ToJson("parameter_json")
                 .Property(j => j.Value)
-                .HasColumnName("parameter_json")
                 .HasMaxLength(EffectParameter.MaxLength);
         });
 

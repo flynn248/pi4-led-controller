@@ -9,6 +9,8 @@ public sealed class Device : AggregateRoot<Guid>
 {
     public Guid TenantId { get; private set; }
     public Hostname Hostname { get; private set; }
+    public DeviceIpAddress IpAddress { get; private set; }
+    public SerialNumber SerialNumber { get; private set; }
     public Description Description { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? ModifiedAtUtc { get; private set; }
@@ -17,17 +19,19 @@ public sealed class Device : AggregateRoot<Guid>
     private Device()
     { }
 
-    private Device(Guid id, Guid tenantId, Hostname hostname, Description description, DateTime createdAtUtc)
+    private Device(Guid id, Guid tenantId, Hostname hostname, DeviceIpAddress ipAddress, SerialNumber serialNumber, Description description, DateTime createdAtUtc)
     {
         TenantId = tenantId;
         Hostname = hostname;
+        IpAddress = ipAddress;
+        SerialNumber = serialNumber;
         Description = description;
         CreatedAtUtc = createdAtUtc;
     }
 
-    public static Result<Device> Create(Guid userId, Hostname hostname, Description description, DateTime createdAtUtc)
+    public static Result<Device> Create(Guid userId, Hostname hostname, DeviceIpAddress ipAddress, SerialNumber serialNumber, Description description, DateTime createdAtUtc)
     {
-        return new Device(Guid.CreateVersion7(), userId, hostname, description, createdAtUtc);
+        return new Device(Guid.CreateVersion7(), userId, hostname, ipAddress, serialNumber, description, createdAtUtc);
     }
 
     public void UpdateHostname(Hostname newhostname, DateTime modifiedAtUtc)

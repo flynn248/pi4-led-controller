@@ -1,0 +1,54 @@
+﻿using Led.Domain.Scenes;
+using Led.Domain.Scenes.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Led.Infrastructure.Database.Configurations;
+
+internal sealed class EffectTypeConfiguration : IEntityTypeConfiguration<EffectType>
+{
+    public void Configure(EntityTypeBuilder<EffectType> builder)
+    {
+        builder.ToTable("effect_type");
+
+        builder.Property(e => e.Id)
+            .HasColumnName("id");
+
+        builder.HasKey(e => e.Id);
+
+        builder.OwnsOne(e => e.Name, name =>
+        {
+            name.Property(n => n.Value)
+                .HasColumnName("name")
+                .HasMaxLength(EffectTypeName.MaxLength);
+        });
+
+        builder.OwnsOne(e => e.Description, desc =>
+        {
+            desc.Property(d => d.Value)
+                .HasColumnName("description")
+                .HasMaxLength(EffectTypeDescription.MaxLength);
+        });
+
+        builder.Property(e => e.IsBuiltin)
+            .HasColumnName("is_builtin")
+            .HasDefaultValue(false);
+
+        builder.Property(e => e.IsImplemented)
+            .HasColumnName("is_implmeneted")
+            .HasDefaultValue(false);
+
+        builder.OwnsOne(e => e.SchemaVersion, version =>
+        {
+            version.Property(v => v.Value)
+                .HasColumnName("schema_version")
+                .HasDefaultValue(1);
+        });
+
+        builder.Property(e => e.CreatedAtUtc)
+            .HasColumnName("created_at_utc");
+
+        builder.Property(e => e.ModifiedAtUtc)
+            .HasColumnName("modified_at_utc");
+    }
+}

@@ -10,6 +10,9 @@ internal sealed class TenantUserConfiguration : IEntityTypeConfiguration<TenantU
     {
         builder.ToTable("tenant_user");
 
+        builder.HasIndex(e => e.TenantId);
+        builder.HasIndex(e => e.UserId);
+
         builder.Property(e => e.TenantId)
             .HasColumnName("tenant_id");
 

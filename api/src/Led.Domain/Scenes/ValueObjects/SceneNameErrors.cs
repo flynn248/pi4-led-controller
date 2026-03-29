@@ -5,7 +5,7 @@ namespace Led.Domain.Scenes.ValueObjects;
 
 public static class SceneNameErrors
 {
-    private const string _baseErrorCode = "scene_name";
+    private const string _baseErrorCode = "scene.name";
     public const string EmptyErrorCode = $"{_baseErrorCode}.empty";
     public const string InvalidLengthErrorCode = $"{_baseErrorCode}.invalid_length";
 

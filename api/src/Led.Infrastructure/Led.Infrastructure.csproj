@@ -3,6 +3,7 @@
 	<ItemGroup>
 		<PackageReference Include="LiteBus.Commands.Extensions.Microsoft.DependencyInjection" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="SSH.NET" />
 	</ItemGroup>
 
 	<ItemGroup>

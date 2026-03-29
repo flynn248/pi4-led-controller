@@ -1,11 +1,11 @@
 ﻿using FluentResults;
 using Led.SharedKernal.FluentResult;
 
-namespace Led.Domain.Devices.ValueObjects;
+namespace Led.Domain.Scenes.ValueObjects;
 
-public static class DescriptionErrors
+public static class EffectTypeDescriptionErrors
 {
-    private const string _baseErrorCode = "device.description";
+    private const string _baseErrorCode = "effect_type.description";
     public const string InvalidLengthErrorCode = $"{_baseErrorCode}.invalid_length";
 
     public static Error InvalidLength(int max) => new Error($"Description cannot exceed {max} characters").Validation(InvalidLengthErrorCode);

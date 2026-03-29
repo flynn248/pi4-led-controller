@@ -2,7 +2,6 @@
 using Led.Application.Users.UpdateEmail;
 using Led.SharedKernal.Errors;
 using Led.SharedKernal.FluentResult;
-using Led.SharedKernal.UoW;
 using Led.WebApi.Controllers.Users.Requests;
 using LiteBus.Commands.Abstractions;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +15,7 @@ public class UserController : ControllerBase
 {
     private readonly ICommandMediator _commandMediator;
 
-    public UserController(IUnitOfWorkManager unitOfWorkManager, ICommandMediator commandMediator)
+    public UserController(ICommandMediator commandMediator)
     {
         _commandMediator = commandMediator;
     }

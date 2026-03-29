@@ -3,6 +3,7 @@ using System;
 using Led.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Led.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260329063946_Add_Updates2")]
+    partial class Add_Updates2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,11 +37,6 @@ namespace Led.Infrastructure.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at_utc");
 
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("ip_address");
-
                     b.Property<DateTime>("LastSeenAtUtc")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_seen_at_utc");
@@ -53,10 +51,11 @@ namespace Led.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId", "IpAddress")
-                        .IsUnique();
+                    b.HasIndex("TenantId");
 
                     b.ToTable("device", "led");
+
+                    b.ToSqlQuery("ALTER TABLE device ADD CONSTRAINT tenant_id_ip_address_constraint UNIQUE (tenant_id, ip_address)");
                 });
 
             modelBuilder.Entity("Led.Domain.LedStrips.LedStrip", b =>
@@ -310,6 +309,24 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasForeignKey("DeviceId");
                         });
 
+                    b.OwnsOne("Led.Domain.Devices.ValueObjects.DeviceIpAddress", "IpAddress", b1 =>
+                        {
+                            b1.Property<Guid>("DeviceId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("ip_address");
+
+                            b1.HasKey("DeviceId");
+
+                            b1.ToTable("device", "led");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DeviceId");
+                        });
+
                     b.OwnsOne("Led.Domain.Devices.ValueObjects.Hostname", "Hostname", b1 =>
                         {
                             b1.Property<Guid>("DeviceId")
@@ -353,6 +370,9 @@ namespace Led.Infrastructure.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("Hostname")
+                        .IsRequired();
+
+                    b.Navigation("IpAddress")
                         .IsRequired();
 
                     b.Navigation("SerialNumber")

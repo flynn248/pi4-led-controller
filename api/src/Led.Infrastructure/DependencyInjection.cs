@@ -1,8 +1,10 @@
-﻿using Led.Domain.Tenants.Repositories;
+﻿using Led.Application.Abstraction.SSH;
+using Led.Domain.Tenants.Repositories;
 using Led.Infrastructure.Clock;
 using Led.Infrastructure.Database;
 using Led.Infrastructure.Database.Abstraction;
 using Led.Infrastructure.Repositories;
+using Led.Infrastructure.SSH;
 using Led.SharedKernal.Clock;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -16,8 +18,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabase()
-            .AddClock();
-        //services.AddLiteBus();
+            .AddClock()
+            .AddSsh();
 
         return services;
     }
@@ -42,6 +44,13 @@ public static class DependencyInjection
     private static IServiceCollection AddClock(this IServiceCollection services)
     {
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddSsh(this IServiceCollection services)
+    {
+        services.AddTransient<ISshService, SshService>();
 
         return services;
     }

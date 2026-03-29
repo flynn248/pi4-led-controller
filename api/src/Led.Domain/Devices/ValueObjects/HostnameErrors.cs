@@ -5,7 +5,7 @@ namespace Led.Domain.Devices.ValueObjects;
 
 public static class HostnameErrors
 {
-    private const string _baseErrorCode = "hostname";
+    private const string _baseErrorCode = "device.hostname";
     public const string EmptyErrorCode = $"{_baseErrorCode}.empty";
     public const string InvalidLengthErrorCode = $"{_baseErrorCode}.invalid_length";
 
