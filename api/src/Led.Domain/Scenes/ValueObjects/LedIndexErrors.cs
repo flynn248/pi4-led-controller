@@ -8,5 +8,5 @@ public static class LedIndexErrors
     private const string _baseErrorCode = "led.index";
     public const string InvalidValueErrorCode = $"{_baseErrorCode}.invalid_value";
 
-    public static Error InvalidValue(short min) => new Error($"Led index cannot be smaller than {min}").Validation(InvalidValueErrorCode);
+    public static Error InvalidValue(short min) => new Error($"Led index cannot be less than {min}").Validation(InvalidValueErrorCode);
 }

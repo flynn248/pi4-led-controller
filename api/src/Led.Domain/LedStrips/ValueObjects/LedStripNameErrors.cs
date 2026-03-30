@@ -10,5 +10,5 @@ public static class LedStripNameErrors
     public const string InvalidLengthErrorCode = $"{_baseErrorCode}.invalid_length";
 
     public static Error Empty => new Error("Name cannot be empty").Validation(EmptyErrorCode);
-    public static Error InvalidLength(int length) => new Error($"Name cannot exceed {length} characters").Validation(InvalidLengthErrorCode);
+    public static Error InvalidLength(int max) => new Error($"Name cannot exceed {max} characters").Validation(InvalidLengthErrorCode);
 }

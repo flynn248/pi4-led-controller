@@ -14,5 +14,5 @@ public static class EmailErrors
     public static Error Empty => new Error("Email cannot be empty").Validation(EmptyErrorCode);
     public static Error InvalidFormat => new Error("Invalid email format").Validation(InvalidFormatErrorCode);
     public static Error Duplicate => new Error("Provided email address already exists").Conflict(DuplicateErrorCode);
-    public static Error InvalidLength(int length) => new Error($"Name cannot exceed {length} characters").Validation(InvalidLengthErrorCode);
+    public static Error InvalidLength(int max) => new Error($"Name cannot exceed {max} characters").Validation(InvalidLengthErrorCode);
 }

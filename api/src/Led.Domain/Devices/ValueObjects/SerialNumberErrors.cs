@@ -10,5 +10,5 @@ public static class SerialNumberErrors
     public const string InvalidLengthErrorCode = $"{_baseErrorCode}.invalid_length";
 
     public static Error Invalid => new Error("Device serial number is invalid").Validation(InvalidErrorCode);
-    public static Error InvalidLength(int length) => new Error($"Serial number cannot exceed {length} characters").Validation(InvalidLengthErrorCode);
+    public static Error InvalidLength(int max) => new Error($"Serial number cannot exceed {max} characters").Validation(InvalidLengthErrorCode);
 }
