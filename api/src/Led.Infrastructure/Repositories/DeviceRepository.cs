@@ -21,8 +21,6 @@ internal sealed class DeviceRepository : Repository<ApplicationDbContext, Device
         var ipAddresses = await dbContext.Set<Device>().Where(d => d.TenantId == tenantId).Select(d => d.IpAddress.Value).ToListAsync(cancellationToken);
 
         return ipAddresses.Any(ip => ip.Equals(ipAddress, StringComparison.OrdinalIgnoreCase));
-
-        //return dbContext.Set<Device>().AnyAsync(d => d.TenantId == tenantId && d.IpAddress.Value == ipAddress, cancellationToken);
     }
 
     public Task<bool> DoesSerialNumberExist(string serialNumber, CancellationToken cancellationToken = default)

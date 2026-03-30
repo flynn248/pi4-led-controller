@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
+	  <PackageReference Include="NCrontab.Signed" />
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\Led.SharedKernal\Led.SharedKernal.csproj" />
 	</ItemGroup>
 </Project>

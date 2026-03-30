@@ -12,15 +12,23 @@ internal sealed class LedStripTypeConfiguration : IEntityTypeConfiguration<LedSt
         builder.ToTable("led_strip_type");
 
         builder.Property(e => e.Id)
-            .HasColumnName("id");
+            .HasColumnName("id")
+            .HasConversion<short>();
 
         builder.HasKey(e => e.Id);
 
-        builder.OwnsOne(e => e.TypeName, name =>
-        {
-            name.Property(e => e.TypeName)
-                .HasColumnName("name")
-                .HasMaxLength(LedStripTypeName.MaxLength);
-        });
+        builder.Property(e => e.Name)
+            .HasColumnName("name")
+            .HasMaxLength(LedStripType.NameMaxLength);
+
+        builder.HasData(GetSeedData());
+    }
+
+    private LedStripType[] GetSeedData()
+    {
+        return
+        [
+            LedStripType.Create(LedStripTypeId.SK6812_RGBW , "SK6812 RGBW")
+        ];
     }
 }

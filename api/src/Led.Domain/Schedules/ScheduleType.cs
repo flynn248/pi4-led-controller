@@ -1,26 +1,26 @@
-﻿using Led.Domain.LedStrips.ValueObjects;
+﻿using Led.Domain.Schedules.ValueObjects;
 using Led.SharedKernal.DDD;
 
-namespace Led.Domain.LedStrips;
+namespace Led.Domain.Schedules;
 
 // Added for EF Core configuration of lookup table
 
-public sealed class LedStripType : Entity<LedStripTypeId>
+public sealed class ScheduleType : Entity<ScheduleTypeId>
 {
     public string Name { get; init; }
 
-    public const int NameMaxLength = 50;
+    public const int NameMaxLength = 16;
 
-    private LedStripType()
+    private ScheduleType()
     { }
 
-    private LedStripType(LedStripTypeId id, string name)
+    private ScheduleType(ScheduleTypeId id, string name)
         : base(id)
     {
         Name = name;
     }
 
-    public static LedStripType Create(LedStripTypeId id, string name)
+    public static ScheduleType Create(ScheduleTypeId id, string name)
     {
         name = name.Trim();
 
@@ -29,6 +29,6 @@ public sealed class LedStripType : Entity<LedStripTypeId>
             throw new InvalidOperationException($"Name cannot exceed {NameMaxLength} characters");
         }
 
-        return new LedStripType(id, name);
+        return new ScheduleType(id, name);
     }
 }

@@ -27,10 +27,11 @@ internal sealed class DeviceConfiguration : IEntityTypeConfiguration<Device>
             .WithMany()
             .HasForeignKey(e => e.TenantId);
 
-        builder.OwnsOne(e => e.Name, hostName =>
+        builder.OwnsOne(e => e.Name, name =>
         {
-            hostName.Property(h => h.Value)
-                .HasColumnName("name");
+            name.Property(h => h.Value)
+                .HasColumnName("name")
+                .HasMaxLength(DeviceName.MaxLength);
         });
 
         //builder.OwnsOne(e => e.IpAddress, ip =>
@@ -41,7 +42,8 @@ internal sealed class DeviceConfiguration : IEntityTypeConfiguration<Device>
         builder.Property(e => e.IpAddress)
             .HasColumnName("ip_address")
             .HasConversion(db => db.Value,
-                           code => DeviceIpAddress.Create(code).Value);
+                           code => DeviceIpAddress.Create(code).Value)
+            .HasMaxLength(DeviceIpAddress.MaxLength);
 
         builder.OwnsOne(e => e.SerialNumber, serial =>
         {
@@ -49,13 +51,15 @@ internal sealed class DeviceConfiguration : IEntityTypeConfiguration<Device>
                 .IsUnique();
 
             serial.Property(s => s.Value)
-                .HasColumnName("serial_number");
+                .HasColumnName("serial_number")
+                .HasMaxLength(SerialNumber.MaxLength);
         });
 
         builder.OwnsOne(e => e.Description, desc =>
         {
             desc.Property(d => d.Value)
-                .HasColumnName("description");
+                .HasColumnName("description")
+                .HasMaxLength(Description.MaxLength);
         });
 
         builder.Property(e => e.CreatedAtUtc)

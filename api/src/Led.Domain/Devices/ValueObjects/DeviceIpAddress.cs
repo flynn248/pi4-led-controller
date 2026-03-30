@@ -7,7 +7,10 @@ public sealed record DeviceIpAddress
 {
     private DeviceIpAddress(string value) => Value = value;
     public string Value { get; init; }
-    // TODO: Max length?
+    public const int MaxLength = 15; // IPv4 is 15. Not supporting IPv6 for now
+
+    private DeviceIpAddress()
+    { }
 
     public static Result<DeviceIpAddress> Create(string value)
     {
@@ -17,6 +20,11 @@ public sealed record DeviceIpAddress
         }
 
         value = value.Trim();
+
+        if (value.Length > MaxLength)
+        {
+            return Result.Fail<DeviceIpAddress>(DeviceIpAddressErrors.InvalidLength(MaxLength));
+        }
 
         if (!IPAddress.TryParse(value, out var _))
         {

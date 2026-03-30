@@ -3,6 +3,7 @@ using System;
 using Led.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Led.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260330020910_Add_Schedule")]
+    partial class Add_Schedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,22 +111,9 @@ namespace Led.Infrastructure.Database.Migrations
                         .HasColumnType("smallint")
                         .HasColumnName("id");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("name");
-
                     b.HasKey("Id");
 
                     b.ToTable("led_strip_type", "led");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (short)1,
-                            Name = "SK6812 RGBW"
-                        });
                 });
 
             modelBuilder.Entity("Led.Domain.Scenes.Effect", b =>
@@ -633,6 +623,31 @@ namespace Led.Infrastructure.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("Voltage")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Led.Domain.LedStrips.LedStripType", b =>
+                {
+                    b.OwnsOne("Led.Domain.LedStrips.ValueObjects.LedStripTypeName", "TypeName", b1 =>
+                        {
+                            b1.Property<short>("LedStripTypeId")
+                                .HasColumnType("smallint");
+
+                            b1.Property<string>("TypeName")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("name");
+
+                            b1.HasKey("LedStripTypeId");
+
+                            b1.ToTable("led_strip_type", "led");
+
+                            b1.WithOwner()
+                                .HasForeignKey("LedStripTypeId");
+                        });
+
+                    b.Navigation("TypeName")
                         .IsRequired();
                 });
 

@@ -6,7 +6,7 @@ public sealed record SerialNumber
 {
     private SerialNumber(string value) => Value = value;
     public string Value { get; init; }
-    // TODO: Max length?
+    public const int MaxLength = 100;
 
     public static Result<SerialNumber> Create(string value)
     {
@@ -16,6 +16,11 @@ public sealed record SerialNumber
         }
 
         value = value.Trim();
+
+        if (value.Length > MaxLength)
+        {
+            return Result.Fail<SerialNumber>(SerialNumberErrors.InvalidLength(MaxLength));
+        }
 
         return new SerialNumber(value);
     }

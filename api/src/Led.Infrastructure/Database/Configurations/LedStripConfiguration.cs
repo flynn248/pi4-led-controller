@@ -34,7 +34,7 @@ internal sealed class LedStripConfiguration : IEntityTypeConfiguration<LedStrip>
 
         builder.Property(e => e.LedStripTypeId)
             .HasColumnName("led_strip_type_id")
-            .HasConversion<int>();
+            .HasConversion<short>();
 
         builder.HasOne<LedStripType>()
             .WithMany()

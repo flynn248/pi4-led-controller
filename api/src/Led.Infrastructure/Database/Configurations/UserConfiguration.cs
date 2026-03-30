@@ -52,7 +52,5 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(e => e.PasswordHash)
             .HasColumnName("password_hash");
-
-        //builder.HasData(User.Create(Email.Create("test@test.com").Value, Username.Create("UserName").Value, "", DateTime.UtcNow));
     }
 }

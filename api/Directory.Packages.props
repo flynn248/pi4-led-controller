@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Static code analysis -->
+    <PackageVersion Include="NCrontab.Signed" Version="3.4.0" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.19.0.132793" />
     <!--Project Packages-->
     <PackageVersion Include="FluentResults" Version="4.0.0" />
