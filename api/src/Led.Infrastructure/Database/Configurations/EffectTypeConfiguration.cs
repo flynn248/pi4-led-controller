@@ -1,5 +1,5 @@
-﻿using Led.Domain.Scenes;
-using Led.Domain.Scenes.ValueObjects;
+﻿using Led.Domain.EffectTypes;
+using Led.Domain.EffectTypes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

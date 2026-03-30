@@ -1,9 +1,9 @@
-﻿using Led.Domain.Scenes.Events;
-using Led.Domain.Scenes.ValueObjects;
+﻿using Led.Domain.EffectTypes.ValueObjects;
+using Led.Domain.Scenes.Events;
 using Led.Domain.Shared.ValueObjects;
 using Led.SharedKernal.DDD;
 
-namespace Led.Domain.Scenes;
+namespace Led.Domain.EffectTypes;
 
 public sealed class EffectType : AggregateRoot<Guid>
 {

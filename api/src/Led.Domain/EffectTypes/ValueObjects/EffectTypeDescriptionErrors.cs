@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Led.SharedKernal.FluentResult;
 
-namespace Led.Domain.Scenes.ValueObjects;
+namespace Led.Domain.EffectTypes.ValueObjects;
 
 public static class EffectTypeDescriptionErrors
 {

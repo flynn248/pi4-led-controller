@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Led.Domain.Scenes.ValueObjects;
+namespace Led.Domain.EffectTypes.ValueObjects;
 
 public sealed record EffectTypeName
 {

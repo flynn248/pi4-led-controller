@@ -1,4 +1,5 @@
-﻿using Led.Domain.LedStrips;
+﻿using Led.Domain.EffectTypes;
+using Led.Domain.LedStrips;
 using Led.Domain.Scenes;
 using Led.Domain.Scenes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
