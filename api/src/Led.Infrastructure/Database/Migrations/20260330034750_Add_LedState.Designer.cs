@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Led.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260330025752_Add_LedState")]
+    [Migration("20260330034750_Add_LedState")]
     partial class Add_LedState
     {
         /// <inheritdoc />

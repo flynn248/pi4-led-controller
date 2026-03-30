@@ -27,3 +27,26 @@ public abstract class AggregateRoot<TId> : Entity<TId>, IAggregateRoot
         _domainEvents.Add(domainEvent);
     }
 }
+
+public abstract class AggregateRoot : Entity, IAggregateRoot
+{
+    private readonly List<IDomainEvent> _domainEvents = new();
+
+    protected AggregateRoot()
+    { }
+
+    public IReadOnlyList<IDomainEvent> GetDomainEvents()
+    {
+        return _domainEvents.AsReadOnly();
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
+    }
+
+    protected void RaiseDomainEvent(IDomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
+    }
+}

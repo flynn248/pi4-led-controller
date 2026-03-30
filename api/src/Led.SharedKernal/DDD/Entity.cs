@@ -10,8 +10,13 @@ public abstract class Entity<TId> : IEntity
         Id = id;
     }
     protected Entity()
-    {
-    }
+    { }
 
     public TId Id { get; init; }
+}
+
+public abstract class Entity : IEntity
+{
+    protected Entity()
+    { }
 }
