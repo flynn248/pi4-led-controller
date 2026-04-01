@@ -619,6 +619,24 @@ namespace Led.Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Led.Domain.Scenes.ValueObjects.ParameterAllowedValues", "AllowedValues", b1 =>
+                        {
+                            b1.Property<Guid>("EffectParameterSchemaId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .HasMaxLength(1280)
+                                .HasColumnType("character varying(1280)")
+                                .HasColumnName("allowed_values");
+
+                            b1.HasKey("EffectParameterSchemaId");
+
+                            b1.ToTable("effect_parameter_schema", "led");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EffectParameterSchemaId");
+                        });
+
                     b.OwnsOne("Led.Domain.EffectTypes.ValueObjects.ParameterDescription", "Description", b1 =>
                         {
                             b1.Property<Guid>("EffectParameterSchemaId")
@@ -657,24 +675,6 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasForeignKey("EffectParameterSchemaId");
                         });
 
-                    b.OwnsOne("Led.Domain.Scenes.ValueObjects.ParameterAllowedValues", "AllowedValues", b1 =>
-                        {
-                            b1.Property<Guid>("EffectParameterSchemaId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Value")
-                                .HasMaxLength(1280)
-                                .HasColumnType("character varying(1280)")
-                                .HasColumnName("allowed_values");
-
-                            b1.HasKey("EffectParameterSchemaId");
-
-                            b1.ToTable("effect_parameter_schema", "led");
-
-                            b1.WithOwner()
-                                .HasForeignKey("EffectParameterSchemaId");
-                        });
-
                     b.Navigation("AllowedValues")
                         .IsRequired();
 
@@ -687,25 +687,6 @@ namespace Led.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Led.Domain.EffectTypes.EffectType", b =>
                 {
-                    b.OwnsOne("PosNum", "SchemaVersion", b1 =>
-                        {
-                            b1.Property<Guid>("EffectTypeId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<int>("Value")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasDefaultValue(1)
-                                .HasColumnName("schema_version");
-
-                            b1.HasKey("EffectTypeId");
-
-                            b1.ToTable("effect_type", "led");
-
-                            b1.WithOwner()
-                                .HasForeignKey("EffectTypeId");
-                        });
-
                     b.OwnsOne("Led.Domain.EffectTypes.ValueObjects.EffectTypeDescription", "Description", b1 =>
                         {
                             b1.Property<Guid>("EffectTypeId")
@@ -735,6 +716,25 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasMaxLength(80)
                                 .HasColumnType("character varying(80)")
                                 .HasColumnName("name");
+
+                            b1.HasKey("EffectTypeId");
+
+                            b1.ToTable("effect_type", "led");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EffectTypeId");
+                        });
+
+                    b.OwnsOne("PosNum", "SchemaVersion", b1 =>
+                        {
+                            b1.Property<Guid>("EffectTypeId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Value")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasDefaultValue(1)
+                                .HasColumnName("schema_version");
 
                             b1.HasKey("EffectTypeId");
 
@@ -876,23 +876,6 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasForeignKey("LedStripId");
                         });
 
-                    b.OwnsOne("Led.Domain.Shared.ValueObjects.PosNum<short>", "Voltage", b1 =>
-                        {
-                            b1.Property<Guid>("LedStripId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<short>("Value")
-                                .HasColumnType("smallint")
-                                .HasColumnName("voltage");
-
-                            b1.HasKey("LedStripId");
-
-                            b1.ToTable("led_strip", "led");
-
-                            b1.WithOwner()
-                                .HasForeignKey("LedStripId");
-                        });
-
                     b.OwnsOne("Led.Domain.LedStrips.ValueObjects.LedStripName", "Name", b1 =>
                         {
                             b1.Property<Guid>("LedStripId")
@@ -903,6 +886,23 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("name");
+
+                            b1.HasKey("LedStripId");
+
+                            b1.ToTable("led_strip", "led");
+
+                            b1.WithOwner()
+                                .HasForeignKey("LedStripId");
+                        });
+
+                    b.OwnsOne("Led.Domain.Shared.ValueObjects.PosNum<short>", "Voltage", b1 =>
+                        {
+                            b1.Property<Guid>("LedStripId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<short>("Value")
+                                .HasColumnType("smallint")
+                                .HasColumnName("voltage");
 
                             b1.HasKey("LedStripId");
 
@@ -1197,6 +1197,25 @@ namespace Led.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Led.Domain.Tenants.User", b =>
                 {
+                    b.OwnsOne("Led.Domain.Tenants.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("email");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("users", "led");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsOne("Led.Domain.Tenants.ValueObjects.Name", "FirstName", b1 =>
                         {
                             b1.Property<Guid>("UserId")
@@ -1226,25 +1245,6 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("last_name");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("users", "led");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("Led.Domain.Tenants.ValueObjects.Email", "Email", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("email");
 
                             b1.HasKey("UserId");
 
