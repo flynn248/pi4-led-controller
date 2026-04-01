@@ -8,6 +8,8 @@ namespace Led.Infrastructure.Database.Configurations;
 
 internal sealed class SceneConfiguration : IEntityTypeConfiguration<Scene>
 {
+    private const string _tenantIdColumnName = "tenant_id";
+
     public void Configure(EntityTypeBuilder<Scene> builder)
     {
         builder.ToTable("scene");
@@ -18,7 +20,7 @@ internal sealed class SceneConfiguration : IEntityTypeConfiguration<Scene>
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.TenantId)
-            .HasColumnName("tenant_id");
+            .HasColumnName(_tenantIdColumnName);
 
         builder.HasOne<Tenant>()
             .WithMany()
@@ -29,6 +31,12 @@ internal sealed class SceneConfiguration : IEntityTypeConfiguration<Scene>
             name.Property(e => e.Value)
                 .HasColumnName("name")
                 .HasMaxLength(SceneName.MaxLength);
+
+            name.Property<Guid>(nameof(Scene.TenantId))
+                .HasColumnName(_tenantIdColumnName);
+
+            name.HasIndex(nameof(Scene.TenantId), nameof(SceneName.Value))
+                .IsUnique();
         });
 
         builder.OwnsOne(e => e.Description, desc =>

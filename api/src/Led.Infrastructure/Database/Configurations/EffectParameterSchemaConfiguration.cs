@@ -8,6 +8,8 @@ namespace Led.Infrastructure.Database.Configurations;
 
 internal sealed class EffectParameterSchemaConfiguration : IEntityTypeConfiguration<EffectParameterSchema>
 {
+    private const string _effectTypeIdColumnName = "effect_type_id";
+
     public void Configure(EntityTypeBuilder<EffectParameterSchema> builder)
     {
         builder.ToTable("effect_parameter_schema");
@@ -24,14 +26,17 @@ internal sealed class EffectParameterSchemaConfiguration : IEntityTypeConfigurat
             .WithMany()
             .HasForeignKey(e => e.EffectTypeId);
 
-        builder.HasIndex(e => new { e.Id, e.EffectTypeId })
-            .IsUnique();
-
         builder.OwnsOne(e => e.Key, key =>
         {
             key.Property(e => e.Value)
                 .HasColumnName("key")
                 .HasMaxLength(ParameterKey.MaxLength);
+
+            key.Property<Guid>(nameof(EffectParameterSchema.EffectTypeId))
+                .HasColumnName(_effectTypeIdColumnName);
+
+            key.HasIndex(nameof(EffectParameterSchema.EffectTypeId), nameof(ParameterKey.Value))
+                .IsUnique();
         });
 
         builder.Property(e => e.DataTypeId)

@@ -3,6 +3,7 @@ using System;
 using Led.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Led.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260401021803_Strip_Index")]
+    partial class Strip_Index
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +75,6 @@ namespace Led.Infrastructure.Database.Migrations
                         .HasColumnName("parameter_data_type_id");
 
                     b.Property<Guid>("EffectTypeId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("uuid")
                         .HasColumnName("effect_type_id");
 
@@ -93,6 +95,9 @@ namespace Led.Infrastructure.Database.Migrations
                     b.HasIndex("DataTypeId");
 
                     b.HasIndex("EffectTypeId");
+
+                    b.HasIndex("Id", "EffectTypeId")
+                        .IsUnique();
 
                     b.ToTable("effect_parameter_schema", "led");
                 });
@@ -125,9 +130,7 @@ namespace Led.Infrastructure.Database.Migrations
                         .HasColumnName("modified_at_utc");
 
                     b.Property<Guid?>("TenantId")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("uuid")
-                        .HasColumnName("tenant_id");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -212,7 +215,6 @@ namespace Led.Infrastructure.Database.Migrations
                         .HasColumnName("modified_at_utc");
 
                     b.Property<Guid>("TenantId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("uuid")
                         .HasColumnName("tenant_id");
 
@@ -374,7 +376,6 @@ namespace Led.Infrastructure.Database.Migrations
                         .HasColumnName("modified_at_utc");
 
                     b.Property<Guid>("TenantId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("uuid")
                         .HasColumnName("tenant_id");
 
@@ -646,11 +647,6 @@ namespace Led.Infrastructure.Database.Migrations
                             b1.Property<Guid>("EffectParameterSchemaId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("EffectTypeId")
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("uuid")
-                                .HasColumnName("effect_type_id");
-
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(60)
@@ -658,9 +654,6 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasColumnName("key");
 
                             b1.HasKey("EffectParameterSchemaId");
-
-                            b1.HasIndex("EffectTypeId", "Value")
-                                .IsUnique();
 
                             b1.ToTable("effect_parameter_schema", "led");
 
@@ -741,11 +734,6 @@ namespace Led.Infrastructure.Database.Migrations
                             b1.Property<Guid>("EffectTypeId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("TenantId")
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("uuid")
-                                .HasColumnName("tenant_id");
-
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(80)
@@ -753,10 +741,6 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasColumnName("name");
 
                             b1.HasKey("EffectTypeId");
-
-                            b1.HasIndex("TenantId", "Value")
-                                .IsUnique()
-                                .HasFilter("WHERE tenant_id IS NULL");
 
                             b1.ToTable("effect_type", "led");
 
@@ -816,19 +800,11 @@ namespace Led.Infrastructure.Database.Migrations
                             b1.Property<Guid>("LedStripId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("DeviceId")
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("uuid")
-                                .HasColumnName("device_id");
-
                             b1.Property<short>("Value")
                                 .HasColumnType("smallint")
                                 .HasColumnName("dma_channel");
 
                             b1.HasKey("LedStripId");
-
-                            b1.HasIndex("DeviceId", "Value")
-                                .IsUnique();
 
                             b1.ToTable("led_strip", "led");
 
@@ -934,11 +910,6 @@ namespace Led.Infrastructure.Database.Migrations
                             b1.Property<Guid>("LedStripId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("TenantId")
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("uuid")
-                                .HasColumnName("tenant_id");
-
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(100)
@@ -946,9 +917,6 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasColumnName("name");
 
                             b1.HasKey("LedStripId");
-
-                            b1.HasIndex("TenantId", "Value")
-                                .IsUnique();
 
                             b1.ToTable("led_strip", "led");
 
@@ -1115,11 +1083,6 @@ namespace Led.Infrastructure.Database.Migrations
                             b1.Property<Guid>("SceneId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("TenantId")
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("uuid")
-                                .HasColumnName("tenant_id");
-
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(80)
@@ -1127,9 +1090,6 @@ namespace Led.Infrastructure.Database.Migrations
                                 .HasColumnName("name");
 
                             b1.HasKey("SceneId");
-
-                            b1.HasIndex("TenantId", "Value")
-                                .IsUnique();
 
                             b1.ToTable("scene", "led");
 

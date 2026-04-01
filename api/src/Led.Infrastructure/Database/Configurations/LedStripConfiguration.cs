@@ -1,6 +1,7 @@
 ﻿using Led.Domain.Devices;
 using Led.Domain.LedStrips;
 using Led.Domain.LedStrips.ValueObjects;
+using Led.Domain.Shared.ValueObjects;
 using Led.Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +10,9 @@ namespace Led.Infrastructure.Database.Configurations;
 
 internal sealed class LedStripConfiguration : IEntityTypeConfiguration<LedStrip>
 {
+    private const string _deviceIdColumnName = "device_id";
+    private const string _tenantIdColumnName = "tenant_id";
+
     public void Configure(EntityTypeBuilder<LedStrip> builder)
     {
         builder.ToTable("led_strip");
@@ -19,14 +23,14 @@ internal sealed class LedStripConfiguration : IEntityTypeConfiguration<LedStrip>
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.TenantId)
-            .HasColumnName("tenant_id");
+            .HasColumnName(_tenantIdColumnName);
 
         builder.HasOne<Tenant>()
             .WithMany()
             .HasForeignKey(e => e.TenantId);
 
         builder.Property(e => e.DeviceId)
-            .HasColumnName("device_id");
+            .HasColumnName(_deviceIdColumnName);
 
         builder.HasOne<Device>()
             .WithMany()
@@ -45,12 +49,24 @@ internal sealed class LedStripConfiguration : IEntityTypeConfiguration<LedStrip>
             name.Property(n => n.Value)
                 .HasColumnName("name")
                 .HasMaxLength(LedStripName.MaxLength);
+
+            name.Property<Guid>(nameof(LedStrip.TenantId))
+                .HasColumnName(_tenantIdColumnName);
+
+            name.HasIndex(nameof(LedStrip.TenantId), nameof(LedStripName.Value))
+                .IsUnique();
         });
 
         builder.OwnsOne(e => e.GpioPin, pin =>
         {
             pin.Property(p => p.Value)
                .HasColumnName("gpio_pin");
+
+            pin.Property<Guid>(nameof(LedStrip.DeviceId))
+                .HasColumnName(_deviceIdColumnName);
+
+            pin.HasIndex(nameof(LedStrip.DeviceId), nameof(PosNum<>.Value))
+                .IsUnique();
         });
 
         builder.OwnsOne(e => e.LedCount, count =>
@@ -69,6 +85,12 @@ internal sealed class LedStripConfiguration : IEntityTypeConfiguration<LedStrip>
         {
             channel.Property(c => c.Value)
                    .HasColumnName("dma_channel");
+
+            channel.Property<Guid>(nameof(LedStrip.DeviceId))
+                .HasColumnName(_deviceIdColumnName);
+
+            channel.HasIndex(nameof(LedStrip.DeviceId), nameof(PosNum<>.Value))
+                .IsUnique();
         });
 
         builder.OwnsOne(e => e.Brightness, bright =>
