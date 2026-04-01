@@ -33,9 +33,8 @@ internal sealed class EffectTypeConfiguration : IEntityTypeConfiguration<EffectT
             name.HasIndex(nameof(EffectType.TenantId), nameof(EffectTypeName.Value))
                 .IsUnique();
 
-            name.HasIndex(nameof(EffectType.TenantId), nameof(EffectTypeName.Value))
-                .IsUnique()
-                .HasFilter($"WHERE {_tenantIdColumnName} IS NULL"); // For built-in types w/ NULL tenant_id
+            name.HasIndex(e => e.Value)
+                .HasFilter($"{_tenantIdColumnName} IS NULL");
         });
 
         builder.OwnsOne(e => e.Description, desc =>

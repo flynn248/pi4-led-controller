@@ -12,9 +12,6 @@ internal sealed class DeviceConfiguration : IEntityTypeConfiguration<Device>
     {
         builder.ToTable("device");
 
-        builder.HasIndex(e => new { e.TenantId, e.IpAddress })
-            .IsUnique();
-
         builder.Property(e => e.Id)
             .HasColumnName("id");
 
@@ -34,16 +31,11 @@ internal sealed class DeviceConfiguration : IEntityTypeConfiguration<Device>
                 .HasMaxLength(DeviceName.MaxLength);
         });
 
-        //builder.OwnsOne(e => e.IpAddress, ip =>
-        //{
-        //    ip.Property(p => p.Value)
-        //        .HasColumnName("ip_address");
-        //});
-        builder.Property(e => e.IpAddress)
-            .HasColumnName("ip_address")
-            .HasConversion(db => db.Value,
-                           code => DeviceIpAddress.Create(code).Value)
-            .HasMaxLength(DeviceIpAddress.MaxLength);
+        builder.OwnsOne(e => e.IpAddress, ip =>
+        {
+            ip.Property(p => p.Value)
+                .HasColumnName("ip_address");
+        });
 
         builder.OwnsOne(e => e.SerialNumber, serial =>
         {

@@ -5,37 +5,38 @@
 namespace Led.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_Updates3 : Migration
+    public partial class Init2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_device_tenant_id",
+                name: "IX_effect_type_name",
                 schema: "led",
-                table: "device");
+                table: "effect_type");
 
             migrationBuilder.CreateIndex(
-                name: "IX_device_tenant_id_ip_address",
+                name: "IX_effect_type_name",
                 schema: "led",
-                table: "device",
-                columns: new[] { "tenant_id", "ip_address" },
-                unique: true);
+                table: "effect_type",
+                column: "name",
+                filter: "tenant_id IS NULL");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_device_tenant_id_ip_address",
+                name: "IX_effect_type_name",
                 schema: "led",
-                table: "device");
+                table: "effect_type");
 
             migrationBuilder.CreateIndex(
-                name: "IX_device_tenant_id",
+                name: "IX_effect_type_name",
                 schema: "led",
-                table: "device",
-                column: "tenant_id");
+                table: "effect_type",
+                column: "name",
+                filter: "tenant_id IS NULL;");
         }
     }
 }

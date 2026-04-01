@@ -5,8 +5,8 @@ namespace Led.Domain.Devices.ValueObjects;
 
 public sealed record DeviceIpAddress
 {
-    private DeviceIpAddress(string value) => Value = value;
-    public string Value { get; init; }
+    private DeviceIpAddress(IPAddress value) => Value = value;
+    public IPAddress Value { get; init; }
     public const int MaxLength = 15; // IPv4 is 15. Not supporting IPv6 for now
 
     private DeviceIpAddress()
@@ -26,11 +26,11 @@ public sealed record DeviceIpAddress
             return Result.Fail<DeviceIpAddress>(DeviceIpAddressErrors.InvalidLength(MaxLength));
         }
 
-        if (!IPAddress.TryParse(value, out var _))
+        if (!IPAddress.TryParse(value, out var ipAddr))
         {
             return Result.Fail<DeviceIpAddress>(DeviceIpAddressErrors.Invalid);
         }
 
-        return new DeviceIpAddress(value);
+        return new DeviceIpAddress(ipAddr);
     }
 }
