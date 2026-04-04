@@ -1,4 +1,5 @@
-﻿using Led.Domain.Devices;
+﻿using System.Net;
+using Led.Domain.Devices;
 using Led.Domain.Devices.Repositories;
 using Led.Infrastructure.Database;
 using Led.Infrastructure.Database.Abstraction;
@@ -14,13 +15,11 @@ internal sealed class DeviceRepository : Repository<ApplicationDbContext, Device
     {
     }
 
-    public async Task<bool> DoesIpAddressExist(Guid tenantId, string ipAddress, CancellationToken cancellationToken = default)
+    public async Task<bool> DoesIpAddressExist(Guid tenantId, IPAddress ipAddress, CancellationToken cancellationToken = default)
     {
         var dbContext = GetDbContext();
 
-        return await dbContext.Set<Device>().Where(d => d.TenantId == tenantId && d.IpAddress.Value.ToString().Equals(ipAddress, StringComparison.OrdinalIgnoreCase)).AnyAsync(cancellationToken);
-
-        //return ipAddresses.Any(ip => ip.Equals(ipAddress, StringComparison.OrdinalIgnoreCase));
+        return await dbContext.Set<Device>().Where(d => d.TenantId == tenantId && d.IpAddress.Value == ipAddress).AnyAsync(cancellationToken);
     }
 
     public Task<bool> DoesSerialNumberExist(string serialNumber, CancellationToken cancellationToken = default)

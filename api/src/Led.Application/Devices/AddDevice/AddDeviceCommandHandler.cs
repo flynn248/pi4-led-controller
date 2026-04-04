@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using Led.Domain.Devices;
+using Led.Domain.Devices.EntityErrors;
 using Led.Domain.Devices.Repositories;
 using Led.Domain.Devices.ValueObjects;
 using Led.SharedKernal.Clock;
@@ -23,22 +24,22 @@ internal sealed class AddDeviceCommandHandler(IUnitOfWorkManager unitOfWorkManag
         {
             return Result.Fail(overall.Errors);
         }
-
+        // TODO: Consider this endpoint both verifying connection and adding to simplify flow and avoid moving/ relying on serial number back to UI
         // IP Address needs to be unique for Tenant
         // Serial number needs to be unique across the board
         using var uow = unitOfWorkManager.Begin();
 
-        var doesIpExist = await deviceRepository.DoesIpAddressExist(message.TenantId, message.IpAddress, cancellationToken);
+        var doesIpExist = await deviceRepository.DoesIpAddressExist(message.TenantId, ipAddress.Value.Value, cancellationToken);
         if (doesIpExist)
         {
-            return Result.Fail("Ip address already exists"); // TODO: Error thing conflict
+            return Result.Fail(DeviceErrors.IPAddressExists);
         }
 
         var doesSerialExist = await deviceRepository.DoesSerialNumberExist(message.SerialNumber, cancellationToken);
 
         if (doesSerialExist)
         {
-            return Result.Fail("Device already registered"); // TODO: Error thing conflict
+            return Result.Fail(DeviceErrors.SerialNumerExists);
         }
 
         var device = Device.Create(message.TenantId, name.Value, ipAddress.Value, serial.Value, desc.Value, dateTimeProvider.UtcNow);
