@@ -4,8 +4,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+#EXPOSE 8080
+#EXPOSE 8081
 
 
 # This stage is used to build the service project
@@ -19,15 +19,15 @@ COPY ["src/Led.Infrastructure/Led.Infrastructure.csproj", "src/Led.Infrastructur
 COPY ["src/Led.Application/Led.Application.csproj", "src/Led.Application/"]
 COPY ["src/Led.Domain/Led.Domain.csproj", "src/Led.Domain/"]
 COPY ["src/Led.SharedKernal/Led.SharedKernal.csproj", "src/Led.SharedKernal/"]
-RUN dotnet restore "./src/Led.WebApi/Led.WebApi.csproj"
+RUN dotnet restore "./src/Led.WebApi/Led.WebApi.csproj" -r linux-arm64
 COPY . .
 WORKDIR "/src/src/Led.WebApi"
-RUN dotnet build "./Led.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Led.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build -r linux-arm64 --self-contained false
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Led.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Led.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -r linux-arm64 --no-restore --self-contained false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
