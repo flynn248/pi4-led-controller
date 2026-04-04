@@ -12,7 +12,7 @@ public sealed class Effect : AggregateRoot<Guid>
     public EffectParameter ParameterJson { get; private set; }
     public int ParameterJsonSchemaVersion { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
-    public DateTime ModifiedAtUtc { get; private set; }
+    public DateTime? ModifiedAtUtc { get; private set; }
 
     private Effect()
     { }
