@@ -38,8 +38,13 @@ def initialize_strip(led_strip_id: uuid):
     return strip
 
 def play_effect(strip: rpi.PixelStrip, scene_effect: SceneEffectDto):
+    if not scene_effect.is_param_current:
+        raise Exception("Parameter version is out of sync")
+
     if scene_effect.name == "static color":        
         Effects.play_static_effect(strip, scene_effect.effect_id)
+    elif scene_effect.name == 'breathe':
+        Effects.play_breathe(strip, scene_effect.effect_id, scene_effect.parameter_json)
     else:
         raise Exception("Effect not implemented")
 
