@@ -1,3 +1,4 @@
+import os
 import time
 import uuid
 import rpi_ws281x as rpi
@@ -5,6 +6,7 @@ import database as db
 import subprocess as sub
 
 from dotenv import load_dotenv
+from dotenv import dotenv_values
 from dtos.scene_effect_dto import SceneEffectDto
 from effects import Effects
 
@@ -44,8 +46,7 @@ def play_effect(strip: rpi.PixelStrip, scene_effect: SceneEffectDto):
 def main():
     serialNum = get_serial_number()
     active = db.Database.query_active_state(serialNum)
-    print(active)
-    
+
     a = active[0]
 
     strip = initialize_strip(a.led_strip_id)
@@ -66,4 +67,5 @@ def main():
 
 if __name__ == "__main__":
     load_dotenv()
+    db.Database.configure()
     main()        

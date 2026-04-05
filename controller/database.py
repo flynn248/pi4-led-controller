@@ -8,8 +8,14 @@ from dtos.scene_effect_dto import SceneEffectDto
 from dtos.led_strip_details_dto import LedStripDetailsDto
 from dtos.led_state_dto import LedStateDto
 
+
 class Database:
-    conn_string :str = os.getenv("DATABASE_CONNECTION")
+
+    conn_string: str = ""
+
+    @classmethod
+    def configure(cls):
+        cls.conn_string = os.getenv("DATABASE_CONNECTION", 'test')
 
     @classmethod
     def query_active_state(cls, serial_number: str):
@@ -80,6 +86,6 @@ class Database:
                 
                 return deets
             
-    
+ 
 
 
