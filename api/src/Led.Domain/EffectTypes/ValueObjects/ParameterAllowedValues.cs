@@ -1,9 +1,10 @@
 ﻿using System.Text.Json;
+using System.Text.RegularExpressions;
 using FluentResults;
 
-namespace Led.Domain.Scenes.ValueObjects;
+namespace Led.Domain.EffectTypes.ValueObjects;
 
-public sealed record ParameterAllowedValues
+public sealed partial record ParameterAllowedValues
 {
     private ParameterAllowedValues(string? value) => Value = value;
     public string? Value { get; init; }
@@ -11,7 +12,7 @@ public sealed record ParameterAllowedValues
 
     public static ParameterAllowedValues Empty => new((string?)null);
 
-    public static Result<ParameterAllowedValues> Create(string value)
+    public static Result<ParameterAllowedValues> Create(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -23,6 +24,11 @@ public sealed record ParameterAllowedValues
         if (!IsValidJson(value))
         {
             return Result.Fail<ParameterAllowedValues>(ParameterAllowedValuesErrors.InvalidFormat);
+        }
+
+        if (IsEmptyJson().IsMatch(value))
+        {
+            return Empty;
         }
 
         if (value.Length > MaxLength)
@@ -45,4 +51,7 @@ public sealed record ParameterAllowedValues
             return false;
         }
     }
+
+    [GeneratedRegex(@"^[\s{}\[\]]+$")]
+    private static partial Regex IsEmptyJson();
 }

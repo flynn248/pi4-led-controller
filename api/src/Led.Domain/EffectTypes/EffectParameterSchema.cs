@@ -1,7 +1,6 @@
 ﻿using FluentResults;
 using Led.Domain.EffectTypes.EntityErrors;
 using Led.Domain.EffectTypes.ValueObjects;
-using Led.Domain.Scenes.ValueObjects;
 using Led.SharedKernal.DDD;
 
 namespace Led.Domain.EffectTypes;
