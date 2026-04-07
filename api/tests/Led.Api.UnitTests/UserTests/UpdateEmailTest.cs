@@ -22,12 +22,12 @@ public class UpdateEmailTest
 
         var handler = GetHandler();
 
+        var expectedErrors = new List<IError>() { UserError.NotFound }.AsReadOnly();
+
         // Act
         var res = await handler.HandleAsync(commandMock, cancellationToken);
 
         // Assert
-        var expectedErrors = new List<IError>() { UserError.NotFound }.AsReadOnly();
-
         res.IsFailed.ShouldBeTrue();
         res.Errors.ShouldBeEquivalentTo(expectedErrors);
     }
@@ -51,12 +51,12 @@ public class UpdateEmailTest
 
         var handler = GetHandler(userRepository: userRepoMock);
 
+        var expectedErrors = new List<IError>() { EmailErrors.Duplicate }.AsReadOnly();
+
         // Act
         var res = await handler.HandleAsync(commandMock, cancellationToken);
 
         // Assert
-        var expectedErrors = new List<IError>() { EmailErrors.Duplicate }.AsReadOnly();
-
         res.IsFailed.ShouldBeTrue();
         res.Errors.ShouldBeEquivalentTo(expectedErrors);
         await userRepoMock.Received(1).IsDuplicateEmail(commandMock.UserId, duplicateEmailMock, cancellationToken);

@@ -34,7 +34,7 @@ public sealed class EffectParameterSchema : Entity<Guid>
         Description = description;
     }
 
-    public static Result<EffectParameterSchema> Create(Guid id, Guid effectTypeId, ParameterKey key, ParameterDataTypeId dataTypeId, bool isRequired, double? minValue, double? maxValue, ParameterAllowedValues allowedValues, ParameterDescription description)
+    public static Result<EffectParameterSchema> Create(Guid effectTypeId, ParameterKey key, ParameterDataTypeId dataTypeId, bool isRequired, double? minValue, double? maxValue, ParameterAllowedValues allowedValues, ParameterDescription description)
     {
         var validation = ValidateInput(dataTypeId, minValue, maxValue, allowedValues);
 
@@ -46,7 +46,7 @@ public sealed class EffectParameterSchema : Entity<Guid>
         return new EffectParameterSchema(Guid.CreateVersion7(), effectTypeId, null, key, dataTypeId, isRequired, minValue, maxValue, allowedValues, description);
     }
 
-    public static Result<EffectParameterSchema> Create(Guid parentId, Guid id, Guid effectTypeId, ParameterKey key, ParameterDataTypeId dataTypeId, bool isRequired, double? minValue, double? maxValue, ParameterAllowedValues allowedValues, ParameterDescription description)
+    public static Result<EffectParameterSchema> Create(Guid parentId, Guid effectTypeId, ParameterKey key, ParameterDataTypeId dataTypeId, bool isRequired, double? minValue, double? maxValue, ParameterAllowedValues allowedValues, ParameterDescription description)
     {
         var validation = ValidateInput(dataTypeId, minValue, maxValue, allowedValues);
 

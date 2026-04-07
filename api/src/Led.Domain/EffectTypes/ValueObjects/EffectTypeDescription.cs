@@ -9,7 +9,7 @@ public sealed record EffectTypeDescription
     public const int MaxLength = 200;
     public static EffectTypeDescription Empty => new(string.Empty);
 
-    public static Result<EffectTypeDescription> Create(string value)
+    public static Result<EffectTypeDescription> Create(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

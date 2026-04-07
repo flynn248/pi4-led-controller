@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Led.Infrastructure.Database.Configurations;
 
-internal class ActiveStateConfiguration : IEntityTypeConfiguration<ActiveState>
+internal sealed class ActiveStateConfiguration : IEntityTypeConfiguration<ActiveState>
 {
     public void Configure(EntityTypeBuilder<ActiveState> builder)
     {

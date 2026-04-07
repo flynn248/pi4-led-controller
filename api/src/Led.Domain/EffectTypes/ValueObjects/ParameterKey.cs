@@ -8,7 +8,7 @@ public sealed record ParameterKey
     public string Value { get; init; }
     public const int MaxLength = 60;
 
-    public static Result<ParameterKey> Create(string value)
+    public static Result<ParameterKey> Create(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
