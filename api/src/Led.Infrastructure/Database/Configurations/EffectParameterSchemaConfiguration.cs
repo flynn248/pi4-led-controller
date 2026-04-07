@@ -9,6 +9,7 @@ namespace Led.Infrastructure.Database.Configurations;
 internal sealed class EffectParameterSchemaConfiguration : IEntityTypeConfiguration<EffectParameterSchema>
 {
     private const string _effectTypeIdColumnName = "effect_type_id";
+    private const string _parentIdColumnName = "parent_id";
 
     public void Configure(EntityTypeBuilder<EffectParameterSchema> builder)
     {
@@ -26,6 +27,13 @@ internal sealed class EffectParameterSchemaConfiguration : IEntityTypeConfigurat
             .WithMany()
             .HasForeignKey(e => e.EffectTypeId);
 
+        builder.Property(e => e.ParentId)
+            .HasColumnName(_parentIdColumnName);
+
+        builder.HasOne<EffectParameterSchema>()
+            .WithMany()
+            .HasForeignKey(e => e.ParentId);
+
         builder.OwnsOne(e => e.Key, key =>
         {
             key.Property(e => e.Value)
@@ -35,7 +43,10 @@ internal sealed class EffectParameterSchemaConfiguration : IEntityTypeConfigurat
             key.Property<Guid>(nameof(EffectParameterSchema.EffectTypeId))
                 .HasColumnName(_effectTypeIdColumnName);
 
-            key.HasIndex(nameof(EffectParameterSchema.EffectTypeId), nameof(ParameterKey.Value))
+            key.Property<Guid>(nameof(EffectParameterSchema.ParentId))
+                .HasColumnName(_parentIdColumnName);
+
+            key.HasIndex(nameof(EffectParameterSchema.EffectTypeId), nameof(EffectParameterSchema.ParentId), nameof(ParameterKey.Value))
                 .IsUnique();
         });
 

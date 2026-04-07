@@ -10,6 +10,8 @@ public static class EffectParameterSchemaErrors
     public const string WholeNumberInvalidFormatErrorCode = $"{_baseErrorCode}.data_type.whole_number.invalid_foramt";
     public const string RationalNumberInvalidFormatErrorCode = $"{_baseErrorCode}.data_type.rational_number.invalid_foramt";
     public const string CollectionInvalidFormatErrorCode = $"{_baseErrorCode}.data_type.collection.invalid_foramt";
+    public const string ComplexInvalidFormatErrorCode = $"{_baseErrorCode}.data_type.complex.invalid_foramt";
+    public const string ParentInvalidErrorCode = $"{_baseErrorCode}.invalid_input";
 
     public static Error BooleanInvalidFormat => new Error("Cannot define minValue, maxValue, or allowedValues for provided data type").Validation(BooleanInvalidFormatErrorCode);
     public static Error WholeNumberInvalidFormat => new Error("Cannot define allowedValues for provided data type").Validation(WholeNumberInvalidFormatErrorCode);
@@ -18,4 +20,6 @@ public static class EffectParameterSchemaErrors
     public static Error RationalNumberMissingRequired => new Error("The minValue and maxValue needs to be defined").Validation(RationalNumberInvalidFormatErrorCode);
     public static Error CollectionInvalidFormat => new Error("Cannot define minValue or maxValue for provided data type").Validation(CollectionInvalidFormatErrorCode);
     public static Error CollectionMissingRequired => new Error("The allowedValues need to be defined").Validation(CollectionInvalidFormatErrorCode);
+    public static Error ComplexInvalidFormat => new Error("Cannot define minValue, maxValue, or allowedValues for provided data type").Validation(ComplexInvalidFormatErrorCode);
+    public static Error ParentInvalid => new Error("Invalid parent id provided").Validation(ParentInvalidErrorCode);
 }

@@ -1,4 +1,5 @@
-﻿using Led.SharedKernal.DDD;
+﻿using Led.Domain.EffectTypes.ValueObjects;
+using Led.SharedKernal.DDD;
 
 namespace Led.Domain.EffectTypes;
 

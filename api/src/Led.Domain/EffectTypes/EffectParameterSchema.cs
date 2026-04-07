@@ -9,6 +9,7 @@ namespace Led.Domain.EffectTypes;
 public sealed class EffectParameterSchema : Entity<Guid>
 {
     public Guid EffectTypeId { get; init; }
+    public Guid? ParentId { get; private set; }
     public ParameterKey Key { get; private set; }
     public ParameterDataTypeId DataTypeId { get; private set; }
     public bool IsRequired { get; private set; }
@@ -20,10 +21,11 @@ public sealed class EffectParameterSchema : Entity<Guid>
     private EffectParameterSchema()
     { }
 
-    private EffectParameterSchema(Guid id, Guid effectTypeId, ParameterKey key, ParameterDataTypeId dataTypeId, bool isRequired, double? minValue, double? maxValue, ParameterAllowedValues allowedValues, ParameterDescription description)
+    private EffectParameterSchema(Guid id, Guid effectTypeId, Guid? parentId, ParameterKey key, ParameterDataTypeId dataTypeId, bool isRequired, double? minValue, double? maxValue, ParameterAllowedValues allowedValues, ParameterDescription description)
         : base(id)
     {
         EffectTypeId = effectTypeId;
+        ParentId = parentId;
         Key = key;
         DataTypeId = dataTypeId;
         IsRequired = isRequired;
@@ -42,7 +44,19 @@ public sealed class EffectParameterSchema : Entity<Guid>
             return Result.Fail(validation.Errors);
         }
 
-        return new EffectParameterSchema(Guid.CreateVersion7(), effectTypeId, key, dataTypeId, isRequired, minValue, maxValue, allowedValues, description);
+        return new EffectParameterSchema(Guid.CreateVersion7(), effectTypeId, null, key, dataTypeId, isRequired, minValue, maxValue, allowedValues, description);
+    }
+
+    public static Result<EffectParameterSchema> Create(Guid parentId, Guid id, Guid effectTypeId, ParameterKey key, ParameterDataTypeId dataTypeId, bool isRequired, double? minValue, double? maxValue, ParameterAllowedValues allowedValues, ParameterDescription description)
+    {
+        var validation = ValidateInput(dataTypeId, minValue, maxValue, allowedValues);
+
+        if (validation.IsFailed)
+        {
+            return Result.Fail(validation.Errors);
+        }
+
+        return new EffectParameterSchema(Guid.CreateVersion7(), effectTypeId, parentId, key, dataTypeId, isRequired, minValue, maxValue, allowedValues, description);
     }
 
     private static Result ValidateInput(ParameterDataTypeId dataTypeId, double? minValue, double? maxValue, ParameterAllowedValues allowedValues)
@@ -88,6 +102,15 @@ public sealed class EffectParameterSchema : Entity<Guid>
                 else if (allowedValues == ParameterAllowedValues.Empty)
                 {
                     return Result.Fail(EffectParameterSchemaErrors.CollectionMissingRequired);
+                }
+
+                return Result.Ok();
+            case ParameterDataTypeId.Complex:
+                if (minValue is not null
+                    || maxValue is not null
+                    || allowedValues != ParameterAllowedValues.Empty)
+                {
+                    return Result.Fail(EffectParameterSchemaErrors.ComplexInvalidFormat);
                 }
 
                 return Result.Ok();
