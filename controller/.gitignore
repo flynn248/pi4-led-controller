@@ -151,6 +151,7 @@ activemq-data/
 .env
 .envrc
 .venv
+.p3_venv
 env/
 venv/
 ENV/
@@ -214,3 +215,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+!*.code-workspace
+
+# Built Visual Studio Code Extensions
+*.vsix
