@@ -8,7 +8,7 @@ public sealed record EffectTypeName
     public string Value { get; init; }
     public const int MaxLength = 80;
 
-    public static Result<EffectTypeName> Create(string? value)
+    public static Result<EffectTypeName> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
