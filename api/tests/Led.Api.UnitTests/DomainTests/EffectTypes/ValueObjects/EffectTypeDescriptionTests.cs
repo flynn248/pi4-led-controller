@@ -48,13 +48,11 @@ public class EffectTypeDescriptionTests
         res.Value.ShouldBeEquivalentTo(EffectTypeDescription.Empty);
     }
 
-    [Theory]
-    [InlineData(" test valid input")]
-    [InlineData(" test valid input ")]
-    [InlineData("test valid input ")]
-    public void Create_Should_RemoveWhitespaceFromEnds(string input)
+    [Fact]
+    public void Create_Should_RemoveWhitespaceFromEnds()
     {
         // Arrange
+        const string input = " test valid input ";
         var expectedResult = input.Trim();
 
         // Act

@@ -62,4 +62,18 @@ public class DeviceNameTests
         res.IsSuccess.ShouldBeTrue();
         res.Value.Value.ShouldBeEquivalentTo(expected);
     }
+
+    [Fact]
+    public void TwoObjects_WithSameValue_Should_BeEqual()
+    {
+        // Arrange
+        const string input = "test valid input";
+
+        // Act
+        var instance1 = DeviceName.Create(input).Value;
+        var instance2 = DeviceName.Create(input).Value;
+
+        // Assert
+        instance1.ShouldBeEquivalentTo(instance2);
+    }
 }

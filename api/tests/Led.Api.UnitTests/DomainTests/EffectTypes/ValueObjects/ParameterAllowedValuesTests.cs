@@ -64,13 +64,12 @@ public class ParameterAllowedValuesTests
     public void Create_Should_BeValidInput(string input)
     {
         // Arrange
+        var expectedResult = input.Trim();
 
         // Act
         var res = ParameterAllowedValues.Create(input);
 
         // Assert
-        var expectedResult = input.Trim();
-
         res.IsSuccess.ShouldBeTrue();
         res.Value.Value.ShouldBeEquivalentTo(expectedResult);
     }

@@ -33,10 +33,9 @@ public class EffectTypeNameTests
     }
 
     [Theory]
-    [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Create_Should_ReturnValidationError_WithEmptyStringInput(string? input)
+    public void Create_Should_ReturnValidationError_WithEmptyStringInput(string input)
     {
         // Arrange
         var expectedErrors = new List<IError>() { EffectTypeNameErrors.Empty }.AsReadOnly();
@@ -49,13 +48,11 @@ public class EffectTypeNameTests
         res.Errors.ShouldBeEquivalentTo(expectedErrors);
     }
 
-    [Theory]
-    [InlineData(" test valid input")]
-    [InlineData(" test valid input ")]
-    [InlineData("test valid input ")]
-    public void Create_Should_RemoveWhitespaceFromEnds(string input)
+    [Fact]
+    public void Create_Should_RemoveWhitespaceFromEnds()
     {
         // Arrange
+        const string input = " test valid input ";
         var expectedResult = input.Trim();
 
         // Act

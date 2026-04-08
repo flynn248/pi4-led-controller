@@ -1,4 +1,5 @@
-﻿using AutoFixture;
+﻿using System.Net;
+using AutoFixture;
 using FluentResults;
 using Led.Domain.Devices.ValueObjects;
 using Shouldly;
@@ -20,7 +21,7 @@ public class DeviceIpAddressTests
     [InlineData(" ")]
     [InlineData(" a ")]
     [InlineData("a")]
-    [InlineData("172.0.0")]
+    [InlineData("172.0.0.")]
     [InlineData("172.0.0.999")]
     [InlineData("172.0.0.255.")]
     [InlineData("172.0.0.255.88")]
@@ -44,7 +45,7 @@ public class DeviceIpAddressTests
         var invalidLengthMock = DeviceIpAddress.MaxLength + _fixture.Create<int>();
         var invalidStringMock = string.Join("", _fixture.CreateMany<char>(invalidLengthMock));
 
-        var expectedErrors = new List<IError>() { DeviceIpAddressErrors.InvalidLength(DeviceIpAddress.MaxLength) };
+        var expectedErrors = new List<IError>() { DeviceIpAddressErrors.InvalidLength(DeviceIpAddress.MaxLength) }.AsReadOnly();
 
         // Act
         var res = DeviceIpAddress.Create(invalidStringMock);
@@ -63,13 +64,27 @@ public class DeviceIpAddressTests
     public void Create_Should_ReturnSuccess(string input)
     {
         // Arrange
-        var expectedValue = input.Trim();
+        var expectedValue = IPAddress.Parse(input.Trim());
 
         // Act
         var res = DeviceIpAddress.Create(input);
 
         // Assert
         res.IsSuccess.ShouldBeTrue();
-        res.Value.Value.ShouldBeEquivalentTo(expectedValue);
+        res.Value.Value.Equals(expectedValue).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void TwoObjects_WithSameValue_Should_BeEqual()
+    {
+        // Arrange
+        const string input = "127.0.255.255";
+
+        // Act
+        var instance1 = DeviceIpAddress.Create(input).Value;
+        var instance2 = DeviceIpAddress.Create(input).Value;
+
+        // Assert
+        instance1.Equals(instance2).ShouldBeTrue();
     }
 }

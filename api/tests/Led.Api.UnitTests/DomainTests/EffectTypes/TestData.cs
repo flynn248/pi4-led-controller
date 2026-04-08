@@ -13,13 +13,4 @@ internal static class TestData
                                                                                           false,
                                                                                           PosNum<int>.Create(1).Value,
                                                                                           createdAtUtc);
-
-    public static EffectParameterSchema CreateEffectParameterSchema() => EffectParameterSchema.Create(Guid.CreateVersion7(),
-                                                                                                      ParameterKey.Create("key").Value,
-                                                                                                      ParameterDataTypeId.Boolean,
-                                                                                                      true,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      ParameterAllowedValues.Empty,
-                                                                                                      ParameterDescription.Empty).Value;
 }
