@@ -29,6 +29,4 @@ public sealed record PosNum<TValue>
     }
 
     public static implicit operator TValue(PosNum<TValue> posNum) => posNum.Value;
-
-    public static Result<PosNum<TValue>> operator +(PosNum<TValue> posNum, PosNum<TValue> num) => new PosNum<TValue>(num);
 }
