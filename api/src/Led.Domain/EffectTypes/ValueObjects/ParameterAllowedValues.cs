@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
-using System.Text.RegularExpressions;
 using FluentResults;
+using Led.SharedKernal.Extensions;
 
 namespace Led.Domain.EffectTypes.ValueObjects;
 
-public sealed partial record ParameterAllowedValues
+public sealed record ParameterAllowedValues
 {
     private ParameterAllowedValues(string? value) => Value = value;
     public string? Value { get; init; }
@@ -26,7 +26,7 @@ public sealed partial record ParameterAllowedValues
             return Result.Fail<ParameterAllowedValues>(ParameterAllowedValuesErrors.InvalidFormat);
         }
 
-        if (IsEmptyJson().IsMatch(value))
+        if (value.IsEmptyJson())
         {
             return Empty;
         }
@@ -51,7 +51,4 @@ public sealed partial record ParameterAllowedValues
             return false;
         }
     }
-
-    [GeneratedRegex(@"^[\s{}\[\]]+$")]
-    private static partial Regex IsEmptyJson();
 }
