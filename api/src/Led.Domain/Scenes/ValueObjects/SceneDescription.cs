@@ -8,11 +8,13 @@ public sealed record SceneDescription
     public string Value { get; init; }
     public const int MaxLength = 200;
 
-    public static Result<SceneDescription> Create(string value)
+    public static SceneDescription Empty => new(string.Empty);
+
+    public static Result<SceneDescription> Create(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return new SceneDescription(string.Empty);
+            return Empty;
         }
 
         value = value.Trim();

@@ -48,11 +48,12 @@ public class LedStripNameTests
         res.Errors.ShouldBeEquivalentTo(expectedErrors);
     }
 
-    [Fact]
-    public void Create_Should_RemoveWhitespaceFromEnds()
+    [Theory]
+    [InlineData(" test valid input ")]
+    [InlineData("is valid")]
+    public void Create_Should_BeValid(string input)
     {
         // Arrange
-        const string input = " test valid input ";
         var expectedResult = input.Trim();
 
         // Act
