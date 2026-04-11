@@ -1,19 +1,22 @@
 ﻿using System.Text.Json;
 using FluentResults;
+using Led.SharedKernal.Extensions;
 
 namespace Led.Domain.Scenes.ValueObjects;
 
 public sealed record EffectParameter
 {
-    private EffectParameter(string value) => Value = value;
-    public string Value { get; init; }
+    private EffectParameter(string? value) => Value = value;
+    public string? Value { get; init; }
     public const int MaxLength = 1280;
 
-    public static Result<EffectParameter> Create(string value)
+    public static EffectParameter Empty => new((string?)null);
+
+    public static Result<EffectParameter> Create(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return Result.Fail<EffectParameter>(EffectParameterErrors.Empty);
+            return Empty;
         }
 
         value = value.Trim();
@@ -21,6 +24,11 @@ public sealed record EffectParameter
         if (!IsValidJson(value))
         {
             return Result.Fail<EffectParameter>(EffectParameterErrors.InvalidFormat);
+        }
+
+        if (value.IsEmptyJson())
+        {
+            return Empty;
         }
 
         if (value.Length > MaxLength)
@@ -35,13 +43,8 @@ public sealed record EffectParameter
     {
         try
         {
-            if (value.StartsWith('{') && value.EndsWith('}'))
-            {
-                JsonDocument.Parse(value);
-                return true;
-            }
-
-            return false;
+            JsonDocument.Parse(value);
+            return true;
         }
         catch
         {

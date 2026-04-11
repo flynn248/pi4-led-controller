@@ -71,9 +71,11 @@ internal sealed class EffectParameterSchemaConfiguration : IEntityTypeConfigurat
         builder.OwnsOne(e => e.AllowedValues, allow =>
         {
             allow.Property(e => e.Value)
-                .HasColumnName("allowed_values")
-                .HasMaxLength(ParameterAllowedValues.MaxLength)
-                .HasDefaultValue(null);
+                 .HasColumnName("allowed_values_json")
+                 .HasColumnType("jsonb")
+                 .IsRequired(false)
+                 .HasMaxLength(ParameterAllowedValues.MaxLength)
+                 .HasDefaultValue(null);
         });
 
         builder.OwnsOne(e => e.Description, desc =>

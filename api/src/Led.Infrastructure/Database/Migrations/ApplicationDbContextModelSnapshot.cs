@@ -654,6 +654,24 @@ namespace Led.Infrastructure.Database.Migrations
                         .WithMany()
                         .HasForeignKey("ParentId");
 
+                    b.OwnsOne("Led.Domain.EffectTypes.ValueObjects.ParameterAllowedValues", "AllowedValues", b1 =>
+                        {
+                            b1.Property<Guid>("EffectParameterSchemaId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .HasMaxLength(1280)
+                                .HasColumnType("jsonb")
+                                .HasColumnName("allowed_values_json");
+
+                            b1.HasKey("EffectParameterSchemaId");
+
+                            b1.ToTable("effect_parameter_schema", "led");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EffectParameterSchemaId");
+                        });
+
                     b.OwnsOne("Led.Domain.EffectTypes.ValueObjects.ParameterDescription", "Description", b1 =>
                         {
                             b1.Property<Guid>("EffectParameterSchemaId")
@@ -698,24 +716,6 @@ namespace Led.Infrastructure.Database.Migrations
 
                             b1.HasIndex("EffectTypeId", "ParentId", "Value")
                                 .IsUnique();
-
-                            b1.ToTable("effect_parameter_schema", "led");
-
-                            b1.WithOwner()
-                                .HasForeignKey("EffectParameterSchemaId");
-                        });
-
-                    b.OwnsOne("Led.Domain.Scenes.ValueObjects.ParameterAllowedValues", "AllowedValues", b1 =>
-                        {
-                            b1.Property<Guid>("EffectParameterSchemaId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Value")
-                                .HasMaxLength(1280)
-                                .HasColumnType("character varying(1280)")
-                                .HasColumnName("allowed_values");
-
-                            b1.HasKey("EffectParameterSchemaId");
 
                             b1.ToTable("effect_parameter_schema", "led");
 
@@ -1091,19 +1091,17 @@ namespace Led.Infrastructure.Database.Migrations
 
                     b.OwnsOne("Led.Domain.Scenes.ValueObjects.EffectParameter", "ParameterJson", b1 =>
                         {
-                            b1.Property<Guid>("EffectId");
+                            b1.Property<Guid>("EffectId")
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(1280);
+                                .HasMaxLength(1280)
+                                .HasColumnType("jsonb")
+                                .HasColumnName("parameter_json");
 
                             b1.HasKey("EffectId");
 
                             b1.ToTable("effect", "led");
-
-                            b1
-                                .ToJson("parameter_json")
-                                .HasColumnType("jsonb");
 
                             b1.WithOwner()
                                 .HasForeignKey("EffectId");

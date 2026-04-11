@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Led.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -118,17 +118,24 @@ namespace Led.Infrastructure.Database.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     effect_type_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    parent_id = table.Column<Guid>(type: "uuid", nullable: true),
                     key = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     parameter_data_type_id = table.Column<short>(type: "smallint", nullable: false),
                     is_required = table.Column<bool>(type: "boolean", nullable: false),
                     min_value = table.Column<double>(type: "double precision", nullable: true),
                     max_value = table.Column<double>(type: "double precision", nullable: true),
-                    allowed_values = table.Column<string>(type: "character varying(1280)", maxLength: 1280, nullable: true),
+                    allowed_values_json = table.Column<string>(type: "jsonb", maxLength: 1280, nullable: true),
                     description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_effect_parameter_schema", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_effect_parameter_schema_effect_parameter_schema_parent_id",
+                        column: x => x.parent_id,
+                        principalSchema: "led",
+                        principalTable: "effect_parameter_schema",
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_effect_parameter_schema_effect_type_effect_type_id",
                         column: x => x.effect_type_id,
@@ -367,10 +374,10 @@ namespace Led.Infrastructure.Database.Migrations
                     scene_id = table.Column<Guid>(type: "uuid", nullable: false),
                     led_strip_id = table.Column<Guid>(type: "uuid", nullable: false),
                     effect_type_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    parameter_json = table.Column<string>(type: "jsonb", maxLength: 1280, nullable: true),
                     parameter_json_schema_version = table.Column<int>(type: "integer", nullable: false),
                     created_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    modified_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    parameter_json = table.Column<string>(type: "jsonb", nullable: false)
+                    modified_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -437,7 +444,8 @@ namespace Led.Infrastructure.Database.Migrations
                     { (short)1, "Property represents a true or false value", "True/ False" },
                     { (short)2, "Property represents a whole number. Ex., 1, 2, 3, ...", "Whole Number" },
                     { (short)3, "Property represents a whole or floating point number. Ex., 1, 2, 2.5, 3.8, ...", "Rational Number" },
-                    { (short)4, "Property represents a collection of alpha-numeric characters. Ex., \"abc\", \"123abc\", ...", "Collection" }
+                    { (short)4, "Property represents a collection of alpha-numeric characters. Ex., \"abc\", \"123abc\", ...", "Collection" },
+                    { (short)5, "Property represents the parent to one or more child properties", "Complex" }
                 });
 
             migrationBuilder.InsertData(
@@ -507,10 +515,10 @@ namespace Led.Infrastructure.Database.Migrations
                 column: "effect_type_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_effect_parameter_schema_effect_type_id_key",
+                name: "IX_effect_parameter_schema_effect_type_id_parent_id_key",
                 schema: "led",
                 table: "effect_parameter_schema",
-                columns: new[] { "effect_type_id", "key" },
+                columns: new[] { "effect_type_id", "parent_id", "key" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -520,11 +528,17 @@ namespace Led.Infrastructure.Database.Migrations
                 column: "parameter_data_type_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_effect_parameter_schema_parent_id",
+                schema: "led",
+                table: "effect_parameter_schema",
+                column: "parent_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_effect_type_name",
                 schema: "led",
                 table: "effect_type",
                 column: "name",
-                filter: "tenant_id IS NULL;");
+                filter: "tenant_id IS NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_effect_type_tenant_id_name",
