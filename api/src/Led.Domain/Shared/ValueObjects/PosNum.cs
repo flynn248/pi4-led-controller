@@ -1,31 +1,22 @@
-﻿using FluentResults;
+﻿using System.Numerics;
+using FluentResults;
 
 namespace Led.Domain.Shared.ValueObjects;
 
 public sealed record PosNum<TValue>
-    where TValue : struct
+    where TValue : INumber<TValue>
 {
     private PosNum(TValue value) => Value = value;
     public TValue Value { get; init; }
 
-    public static Result<PosNum<int>> Create(int value)
+    public static Result<PosNum<TValue>> Create(TValue value)
     {
-        if (value <= 0)
+        if (value <= TValue.Zero)
         {
-            return Result.Fail<PosNum<int>>(PosNumErrors.InvalidValue);
+            return Result.Fail(NumErrors.ZeroOrLess);
         }
 
-        return new PosNum<int>(value);
-    }
-
-    public static Result<PosNum<short>> Create(short value)
-    {
-        if (value <= 0)
-        {
-            return Result.Fail<PosNum<short>>(PosNumErrors.InvalidValue);
-        }
-
-        return new PosNum<short>(value);
+        return new PosNum<TValue>(value);
     }
 
     public static implicit operator TValue(PosNum<TValue> posNum) => posNum.Value;

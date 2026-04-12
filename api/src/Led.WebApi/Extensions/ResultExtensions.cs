@@ -23,7 +23,7 @@ internal static class ResultExtensions
         return result.IsSuccess ? onSuccess() : MapFailure(result.Errors);
     }
 
-    public static IActionResult MatchResult<TIn>(this Result<TIn> result, Func<object?, IActionResult> onSuccess)
+    public static IActionResult EvaluateResult<TIn>(this Result<TIn> result, Func<object?, IActionResult> onSuccess)
     {
         return result.IsSuccess ? onSuccess(result.Value) : MapFailure(result.Errors);
     }

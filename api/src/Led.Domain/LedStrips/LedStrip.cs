@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using Led.Domain.LedStrips.Events;
+﻿using Led.Domain.LedStrips.Events;
 using Led.Domain.LedStrips.ValueObjects;
 using Led.Domain.Shared.ValueObjects;
 using Led.SharedKernal.DDD;
@@ -16,7 +15,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
     public PosNum<short> LedCount { get; private set; }
     public PosNum<int> Frequency { get; private set; }
     public PosNum<short> DmaChannel { get; private set; }
-    public PosNum<short> Brightness { get; private set; }
+    public ZeroOrPosNum<short> Brightness { get; private set; }
     public bool Invert { get; private set; }
     public PosNum<short> Voltage { get; private set; }
     public PosNum<int> MaxCurrentMa { get; private set; }
@@ -35,7 +34,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
                      PosNum<short> ledCount,
                      PosNum<int> frequency,
                      PosNum<short> dmaChannel,
-                     PosNum<short> brightness,
+                     ZeroOrPosNum<short> brightness,
                      bool invert,
                      PosNum<short> voltage,
                      PosNum<int> maxCurrentMa,
@@ -57,7 +56,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
         CreatedAtUtc = createdAtUtc;
     }
 
-    public static Result<LedStrip> Create(Guid tenantId,
+    public static LedStrip Create(Guid tenantId,
                                           Guid deviceId,
                                           LedStripTypeId ledStripTypeId,
                                           LedStripName name,
@@ -65,7 +64,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
                                           PosNum<short> ledCount,
                                           PosNum<int> frequency,
                                           PosNum<short> dmaChannel,
-                                          PosNum<short> brightness,
+                                          ZeroOrPosNum<short> brightness,
                                           bool invert,
                                           PosNum<short> voltage,
                                           PosNum<int> maxCurrentMa,
@@ -96,7 +95,7 @@ public sealed class LedStrip : AggregateRoot<Guid>
                        PosNum<short> ledCount,
                        PosNum<int> frequency,
                        PosNum<short> dmaChannel,
-                       PosNum<short> brightness,
+                       ZeroOrPosNum<short> brightness,
                        bool invert,
                        PosNum<short> voltage,
                        PosNum<int> maxCurrentMa,

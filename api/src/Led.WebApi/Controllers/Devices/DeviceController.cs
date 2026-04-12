@@ -28,7 +28,7 @@ public class DeviceController : BaseController
 
         var res = await _commandMediator.SendAsync(command, cancellationToken);
 
-        return res.MatchResult(Ok);
+        return res.EvaluateResult(Ok);
     }
 
     [HttpPost]
