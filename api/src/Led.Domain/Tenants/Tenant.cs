@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using Led.Domain.Tenants.ValueObjects;
+﻿using Led.Domain.Tenants.ValueObjects;
 using Led.SharedKernal.DDD;
 
 namespace Led.Domain.Tenants;
@@ -14,16 +13,20 @@ public sealed class Tenant : AggregateRoot<Guid>
     private Tenant()
     { }
 
-    private Tenant(Guid id, Name name, DateTime createdAtUtc)
+    private Tenant(Guid id, Name name, TenantUser tenantUser, DateTime createdAtUtc)
         : base(id)
     {
         Name = name;
         CreatedAtUtc = createdAtUtc;
+        Users.Add(tenantUser);
     }
 
-    public static Result<Tenant> Create(Name name, DateTime createdAtUtc)
+    public static Tenant Create(Guid userId, Name name, DateTime createdAtUtc)
     {
-        return new Tenant(Guid.CreateVersion7(), name, createdAtUtc);
+        var tenantId = Guid.CreateVersion7();
+        var tenantUser = new TenantUser(tenantId, userId, createdAtUtc);
+
+        return new Tenant(tenantId, name, tenantUser, createdAtUtc);
     }
 
     public void UpdateName(Name name, DateTime modifiedAtUtc)

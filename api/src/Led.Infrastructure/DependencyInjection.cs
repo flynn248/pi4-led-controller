@@ -1,10 +1,8 @@
 ﻿using Led.Application.Abstraction.SSH;
-using Led.Domain.Devices.Repositories;
-using Led.Domain.Tenants.Repositories;
+using Led.Domain.Abstraction;
 using Led.Infrastructure.Clock;
 using Led.Infrastructure.Database;
 using Led.Infrastructure.Database.Abstraction;
-using Led.Infrastructure.Repositories;
 using Led.Infrastructure.SSH;
 using Led.SharedKernal.Clock;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +17,20 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabase()
+            .AddRepositories()
             .AddClock()
             .AddSsh();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.Scan(scan => scan
+            .FromAssemblies(typeof(DependencyInjection).Assembly)
+            .AddClasses(filter => filter.AssignableTo(typeof(IRepository<,>)), publicOnly: false)
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
 
         return services;
     }
@@ -36,9 +46,6 @@ public static class DependencyInjection
                 options.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default);
             });
         });
-
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IDeviceRepository, DeviceRepository>();
 
         return services;
     }

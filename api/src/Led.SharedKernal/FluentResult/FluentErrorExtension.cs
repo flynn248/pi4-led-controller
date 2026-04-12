@@ -90,7 +90,7 @@ public static class FluentErrorExtension
         ArgumentNullException.ThrowIfNull(error);
 
         return (TError)error.WithMetadata(ErrorCodeKey, code)
-            .WithMetadata(ErrorTypeKey, ErrorType.AccessUnAuthorized);
+            .WithMetadata(ErrorTypeKey, ErrorType.AccessUnauthorized);
     }
 
     /// <summary>

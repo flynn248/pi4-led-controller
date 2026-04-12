@@ -1,12 +1,15 @@
-﻿using Led.Application.Abstraction.SSH;
+﻿using FluentResults;
+using Led.Application.Abstraction.SSH;
+using Led.SharedKernal.FluentResult;
 using Microsoft.Extensions.Logging;
 using Renci.SshNet;
+using Renci.SshNet.Common;
 
 namespace Led.Infrastructure.SSH;
 
 internal sealed class SshService(ILogger<SshService> logger) : ISshService
 {
-    public async Task<string> GetLinuxDeviceCpuSerialNumber(string host, string username, string password, CancellationToken cancellationToken = default)
+    public async Task<Result<string>> GetLinuxDeviceCpuSerialNumber(string host, string username, string password, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -24,10 +27,29 @@ internal sealed class SshService(ILogger<SshService> logger) : ISshService
 
             return result.Trim().TrimEnd('\0');
         }
+        catch (SshAuthenticationException ex)
+        {
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation(ex, "{MethName} encountered an error", nameof(GetLinuxDeviceCpuSerialNumber));
+            }
+
+            return Result.Fail(SshServiceErrors.Authentication);
+        }
         catch (Exception ex)
         {
             logger.LogError(ex, "{MethName} encountered an error", nameof(GetLinuxDeviceCpuSerialNumber));
-            return string.Empty;
+            return Result.Fail(SshServiceErrors.Failure);
         }
     }
+}
+
+internal static class SshServiceErrors
+{
+    private const string _baseErrorCode = "ssh";
+    public const string EmptyErrorCode = $"{_baseErrorCode}.failure";
+    public const string AuthenticationErrorCode = $"{_baseErrorCode}.authentication";
+
+    public static Error Failure => new Error("Unknown error occurred").Failure(EmptyErrorCode);
+    public static Error Authentication => new Error("Error authenticating with device. Please verify username/ password").Validation(AuthenticationErrorCode);
 }

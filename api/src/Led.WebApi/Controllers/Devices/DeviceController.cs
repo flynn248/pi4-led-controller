@@ -1,17 +1,14 @@
 ﻿using Led.Application.Devices.AddDevice;
 using Led.Application.Devices.VerifyConnection;
 using Led.SharedKernal.Errors;
-using Led.SharedKernal.FluentResult;
 using Led.WebApi.Controllers.Devices.Requests;
+using Led.WebApi.Extensions;
 using LiteBus.Commands.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Led.WebApi.Controllers.Devices;
 
-[ApiController]
-[Route("api/[controller]")]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class DeviceController : ControllerBase
+public class DeviceController : BaseController
 {
     private readonly ICommandMediator _commandMediator;
 
@@ -22,47 +19,27 @@ public class DeviceController : ControllerBase
 
     [HttpPost]
     [Route("verify-connection")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesErrorTypeResponse(ErrorType.Failure)]
+    [ProducesErrorTypeResponse(ErrorType.Validation)]
     public async Task<IActionResult> VerifyDeviceConnection(VerifyDeviceRequest request, CancellationToken cancellationToken)
     {
         var command = new VerifyDeviceConnectionCommand(request.IpAddress, request.Username, request.Password);
 
         var res = await _commandMediator.SendAsync(command, cancellationToken);
 
-        if (res.IsFailed) // TODO: Handle more globally
-        {
-            var errorType = res.Errors[0].GetErrorType();
-
-            return errorType switch
-            {
-                ErrorType.NotFound => NotFound(res.Errors[0].Message),
-                ErrorType.Validation => BadRequest(res.Errors[0].Message),
-                _ => StatusCode(500, "An unexpected error occurred."),
-            };
-        }
-
-        return Ok(res.Value);
+        return res.MatchResult(Ok);
     }
 
     [HttpPost]
     [Route("")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> AddDevice(AddDeviceRequest request, CancellationToken cancellationToken)
     {
-        var command = new AddDeviceCommand(Guid.Parse("993bcfbb-0dcb-4f8d-bf2f-fae746effb5f"), request.Name, request.IpAddress, request.SerialNumber, request.Description); // TODO: Fix TenantId
+        var command = new AddDeviceCommand(request.TenantId, request.Name, request.IpAddress, request.Username, request.Password, request.Description);
 
         var res = await _commandMediator.SendAsync(command, cancellationToken);
 
-        if (res.IsFailed) // TODO: Handle more globally
-        {
-            var errorType = res.Errors[0].GetErrorType();
-
-            return errorType switch
-            {
-                ErrorType.NotFound => NotFound(res.Errors[0].Message),
-                ErrorType.Validation => BadRequest(res.Errors[0].Message),
-                _ => StatusCode(500, "An unexpected error occurred."),
-            };
-        }
-
-        return NoContent();
+        return res.MatchResult(NoContent);
     }
 }

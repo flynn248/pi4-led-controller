@@ -27,7 +27,7 @@ internal sealed class UpdateEmailCommandHandler(IUserRepository userRepository,
 
         if (isDupe)
         {
-            return Result.Fail(EmailErrors.Duplicate);
+            return Result.Fail(UserError.EmailExists);
         }
 
         var newEmail = Email.Create(message.NewEmail);

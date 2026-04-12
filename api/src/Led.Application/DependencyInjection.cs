@@ -1,4 +1,6 @@
-﻿using LiteBus.Commands;
+﻿using System.Reflection;
+using FluentValidation;
+using LiteBus.Commands;
 using LiteBus.Extensions.Microsoft.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,9 +8,14 @@ namespace Led.Application;
 
 public static class DependencyInjection
 {
+    private static readonly Assembly _assembly = typeof(DependencyInjection).Assembly;
+
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddLiteBus();
+
+        // Add FluentValidation validators
+        services.AddValidatorsFromAssembly(_assembly, includeInternalTypes: true);
 
         return services;
     }
@@ -17,9 +24,11 @@ public static class DependencyInjection
     {
         services.AddLiteBus(builder =>
         {
-            var assembly = typeof(DependencyInjection).Assembly;
-
-            builder.AddCommandModule(action => action.RegisterFromAssembly(assembly));
+            builder.AddCommandModule(action =>
+            {
+                //action.Register(typeof(ValidationBehavior<>));
+                action.RegisterFromAssembly(_assembly);
+            });
         });
 
         return services;

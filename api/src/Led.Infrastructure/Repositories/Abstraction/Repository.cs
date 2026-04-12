@@ -82,4 +82,10 @@ internal abstract class Repository<TDbContext, TEntity, TEntityId> : IRepository
         var context = GetDbContext();
         return await context.Set<TEntity>().SingleOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
     }
+
+    public async Task<bool> Any(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        var context = GetDbContext();
+        return await context.Set<TEntity>().AnyAsync(predicate, cancellationToken);
+    }
 }

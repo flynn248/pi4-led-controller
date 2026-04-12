@@ -17,7 +17,7 @@ public interface IRepository<TEntity, TEntityId>
     /// <summary>
     /// Get all entities of <typeparamref name="TEntity"/>
     /// </summary>
-    /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to cancel the asynchronous operation</param>
     /// <returns>A <see cref="List{T}"/> of all entities</returns>
     Task<List<TEntity>> GetList(CancellationToken cancellationToken = default);
 
@@ -25,7 +25,7 @@ public interface IRepository<TEntity, TEntityId>
     /// Get entities of <typeparamref name="TEntity"/> that match the <paramref name="predicate"/>
     /// </summary>
     /// <param name="predicate">Conditions to apply to filter result set</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to cancel the asynchronous operation</param>
     /// <returns>A <see cref="List{T}"/> that match the given <paramref name="predicate"/></returns>
     Task<List<TEntity>> GetList(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
@@ -34,7 +34,7 @@ public interface IRepository<TEntity, TEntityId>
     /// </summary>
     /// <typeparam name="TResult">The return type</typeparam>
     /// <param name="selector">Projection to perform</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to cancel the asynchronous operation</param>
     /// <returns>A <see cref="List{T}"/></returns>
     Task<List<TResult>> GetList<TResult>(Expression<Func<TEntity, TResult>> selector, CancellationToken cancellationToken = default);
 
@@ -44,7 +44,7 @@ public interface IRepository<TEntity, TEntityId>
     /// <typeparam name="TResult">The return type</typeparam>
     /// <param name="predicate">Conditions to apply to filter result set</param>
     /// <param name="selector">Projection to perform</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to cancel the asynchronous operation</param>
     /// <returns>A <see cref="List{T}"/> that match the given <paramref name="predicate"/></returns>
     Task<List<TResult>> GetList<TResult>(Expression<Func<TEntity, bool>> predicate,
                                          Expression<Func<TEntity, TResult>> selector,

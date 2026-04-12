@@ -51,7 +51,7 @@ public class UpdateEmailTest
 
         var handler = GetHandler(userRepository: userRepoMock);
 
-        var expectedErrors = new List<IError>() { EmailErrors.Duplicate }.AsReadOnly();
+        var expectedErrors = new List<IError>() { UserError.EmailExists }.AsReadOnly();
 
         // Act
         var res = await handler.HandleAsync(commandMock, cancellationToken);

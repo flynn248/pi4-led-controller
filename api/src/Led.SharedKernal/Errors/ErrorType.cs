@@ -7,6 +7,6 @@ public enum ErrorType
     NotFound,
     Validation,
     Conflict,
-    AccessUnAuthorized,
+    AccessUnauthorized,
     AccessForbidden
 }

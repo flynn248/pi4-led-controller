@@ -2,6 +2,7 @@ using Led.Application;
 using Led.Infrastructure;
 using Led.SharedKernal;
 using Led.WebApi.Extensions;
+using Led.WebApi.Middleware;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSharedKernalServices();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddPresentation();
 
 var app = builder.Build();
 
@@ -27,6 +25,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<RequestContextLoggingMiddleware>();
+
+app.UseExceptionHandler();
 
 app.UseAuthorization();
 

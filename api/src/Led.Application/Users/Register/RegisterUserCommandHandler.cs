@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using Led.Domain.Tenants;
+using Led.Domain.Tenants.EntityErrors;
 using Led.Domain.Tenants.Repositories;
 using Led.Domain.Tenants.ValueObjects;
 using Led.SharedKernal.Clock;
@@ -26,12 +27,26 @@ internal sealed class RegisterUserCommandHandler(IDateTimeProvider dateTimeProvi
             return Result.Fail(overall.Errors);
         }
 
-        var user = User.Create(firstName.Value, lastName.Value, username.Value, email.Value, message.Password, dateTimeProvider.UtcNow);
-
         using var uow = unitOfWorkManager.Begin();
 
-        userRepository.Add(user);
+        var isDupeEmail = await userRepository.IsDuplicateEmail(email.Value.Value, cancellationToken);
 
+        if (isDupeEmail)
+        {
+            return Result.Fail(UserError.EmailExists);
+        }
+
+        var isDupeUsename = await userRepository.IsDuplicateUsername(username.Value.Value, cancellationToken);
+
+        if (isDupeUsename)
+        {
+            return Result.Fail(UserError.UsernameExists);
+        }
+
+        var user = User.Create(firstName.Value, lastName.Value, username.Value, email.Value, message.Password, dateTimeProvider.UtcNow);
+
+        userRepository.Add(user);
+        // TODO: Doing optimistic concurrency
         await uow.SaveChanges(cancellationToken);
 
         return Result.Ok(user.Id);
