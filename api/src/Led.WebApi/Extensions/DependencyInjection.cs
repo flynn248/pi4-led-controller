@@ -1,5 +1,5 @@
 ﻿using Led.WebApi.Middleware;
-using Led.WebApi.Middlewares;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace Led.WebApi.Extensions;
 
@@ -11,7 +11,10 @@ internal static class DependencyInjection
             .AddProblemDetails()
             .IncludeOpenApi();
 
-        services.AddControllers();
+        services.AddControllers(options =>
+        {
+            options.Conventions.Add(new RouteTokenTransformerConvention(new KebabParameterTransformer()));
+        });
 
         return services;
     }

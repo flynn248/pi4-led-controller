@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Led.WebApi.Middlewares;
+namespace Led.WebApi.Middleware;
 
 internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
@@ -23,7 +23,7 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
             problemDetails.Extensions["errors"] = exceptionDetails.Errors;
         }
 
-        if (exceptionDetails.Status >= 500)
+        if (exceptionDetails.Status >= StatusCodes.Status500InternalServerError)
         {
             logger.LogError(exception, "Unhandled exception occurred");
         }

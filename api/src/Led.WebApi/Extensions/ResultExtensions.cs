@@ -18,7 +18,7 @@ internal static class ResultExtensions
         {ErrorType.Validation, 6 }
     };
 
-    public static IActionResult MatchResult(this Result result, Func<IActionResult> onSuccess)
+    public static IActionResult EvaluateResult(this Result result, Func<IActionResult> onSuccess)
     {
         return result.IsSuccess ? onSuccess() : MapFailure(result.Errors);
     }
@@ -40,49 +40,49 @@ internal static class ResultExtensions
         {
             ErrorType.NotFound => new ProblemDetails
             {
-                Status = StatusCodes.Status404NotFound,
+                Status = errorType.Key.GetHttpStatusCode(),
                 Type = "NotFound",
                 Title = "Not found",
                 Detail = "One or more requested recources cannot be found"
             },
             ErrorType.Validation => new ProblemDetails
             {
-                Status = StatusCodes.Status400BadRequest,
+                Status = errorType.Key.GetHttpStatusCode(),
                 Type = "ValidationFailure",
                 Title = "Validation failure",
                 Detail = "One or more validation errors occurred"
             },
             ErrorType.Conflict => new ProblemDetails
             {
-                Status = StatusCodes.Status409Conflict,
+                Status = errorType.Key.GetHttpStatusCode(),
                 Type = "Conflict",
                 Title = "Conflict",
                 Detail = "One or more conflicts occurred"
             },
             ErrorType.AccessUnauthorized => new ProblemDetails
             {
-                Status = StatusCodes.Status401Unauthorized,
+                Status = errorType.Key.GetHttpStatusCode(),
                 Type = "Authorization",
                 Title = "Unauthorized",
                 Detail = "Unauthorized to access requested resource"
             },
             ErrorType.AccessForbidden => new ProblemDetails
             {
-                Status = StatusCodes.Status403Forbidden,
+                Status = errorType.Key.GetHttpStatusCode(),
                 Type = "Forbidden",
                 Title = "Forbidden",
                 Detail = "Forbidden"
             },
             _ => new ProblemDetails
             {
-                Status = StatusCodes.Status500InternalServerError,
+                Status = errorType.Key.GetHttpStatusCode(),
                 Type = "ServerError",
                 Title = "Server error",
                 Detail = "An unexpected error occurred"
             }
         };
 
-        if (problemDetails.Status < 500)
+        if (problemDetails.Status < StatusCodes.Status500InternalServerError)
         {
             problemDetails.Extensions["errors"] = errorType.Select(e => new
             {
